@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="Reproject.AboutDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Uid="AboutDialog"
+    Title="Acerca de"
+    CloseButtonText="Cerrar"
+    DefaultButton="Close">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="560">
+        <StackPanel Spacing="12" Width="480">
+
+            <!-- App header -->
+            <StackPanel Orientation="Horizontal" Spacing="14">
+                <Image x:Name="AppIcon" Width="56" Height="56" VerticalAlignment="Top" />
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Uid="AppTitleText" Text="Reproject"
+                               Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" />
+                    <TextBlock x:Uid="AboutAppSubtitle" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                               Text="Transformación de coordenadas entre sistemas de referencia." />
+                    <HyperlinkButton Content="github.com/digi21/reproject"
+                                     NavigateUri="https://github.com/digi21/reproject" Padding="0" />
+                </StackPanel>
+            </StackPanel>
+
+            <!-- CrsKit -->
+            <TextBlock Text="CrsKit" Style="{ThemeResource BodyStrongTextBlockStyle}" Margin="0,4,0,0" />
+            <StackPanel Orientation="Horizontal" Spacing="14">
+                <Image x:Name="CrsKitIcon" Width="44" Height="44" VerticalAlignment="Top" />
+                <StackPanel>
+                    <TextBlock x:Uid="AboutCrsKitDesc" TextWrapping="Wrap"
+                               Text="Librería de sistemas de referencia y transformación de coordenadas sobre la que se construye esta aplicación." />
+                    <HyperlinkButton Content="github.com/digi21/crskit"
+                                     NavigateUri="https://github.com/digi21/crskit" Padding="0" />
+                </StackPanel>
+            </StackPanel>
+
+            <!-- EPSG -->
+            <TextBlock x:Uid="AboutEpsgHeading" Text="Datos de sistemas de referencia (EPSG)"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" TextWrapping="Wrap" Margin="0,4,0,0" />
+            <!-- Filled at runtime with the active database's dataset version (e.g. "EPSG Dataset v12.057"). -->
+            <TextBlock x:Name="EpsgVersionText" Text="EPSG Dataset"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            <TextBlock x:Uid="AboutEpsgBody" TextWrapping="Wrap"
+                       Text="Este producto incluye el EPSG Geodetic Parameter Dataset, propiedad de IOGP (International Association of Oil &amp; Gas Producers), utilizado conforme a los EPSG Dataset Terms of Use. El dataset EPSG se ofrece gratuitamente: el valor de esta aplicación reside en su funcionalidad, no en los datos EPSG." />
+            <TextBlock x:Uid="AboutEpsgDisclaimer" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                       Text="El EPSG Dataset se proporciona «TAL CUAL», sin garantía de ningún tipo, expresa o implícita, incluidas las de comerciabilidad o idoneidad para un fin concreto. El usuario asume todo el riesgo en cuanto a su exactitud y uso." />
+            <HyperlinkButton Content="epsg.org"
+                             NavigateUri="https://epsg.org/" Padding="0" />
+            <HyperlinkButton Content="EPSG Dataset Terms of Use"
+                             NavigateUri="https://epsg.org/terms-of-use.html" Padding="0" />
+
+            <!-- SQLite -->
+            <TextBlock Text="SQLite" Style="{ThemeResource BodyStrongTextBlockStyle}" Margin="0,4,0,0" />
+            <TextBlock x:Uid="AboutSqliteBody" TextWrapping="Wrap"
+                       Text="La base de datos EPSG se almacena con SQLite, software de dominio público." />
+
+            <!-- Copyright: Digi21 and the author name are links (language-neutral, no localized strings) -->
+            <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Margin="0,8,0,0"><Run Text="© 2015–2026 " /><Hyperlink NavigateUri="https://www.digi21.net">Digi21</Hyperlink><Run Text=" · " /><Hyperlink NavigateUri="https://github.com/joseangelmt">José Ángel Martínez Torres</Hyperlink></TextBlock>
+        </StackPanel>
+    </ScrollViewer>
+</ContentDialog>

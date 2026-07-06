@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- App icon: "Transformación" — projected grid -> arrow -> globe. -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#123a52"/>
+      <stop offset="1" stop-color="#0c2130"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="512" height="512" rx="104" fill="url(#tile)"/>
+  <g fill="none" stroke="#eef4f8" stroke-width="19" stroke-linecap="round" stroke-linejoin="round">
+    <!-- projected CRS: a rectilinear grid -->
+    <rect x="96" y="196" width="118" height="118" rx="10"/>
+    <line x1="96"  y1="235.3" x2="214" y2="235.3"/>
+    <line x1="96"  y1="274.6" x2="214" y2="274.6"/>
+    <line x1="135.3" y1="196" x2="135.3" y2="314"/>
+    <line x1="174.6" y1="196" x2="174.6" y2="314"/>
+    <!-- geographic CRS: a globe -->
+    <circle cx="372" cy="255" r="58"/>
+    <ellipse cx="372" cy="255" rx="23" ry="58"/>
+    <line x1="314" y1="255" x2="430" y2="255"/>
+  </g>
+  <!-- the transformation itself -->
+  <g fill="none" stroke="#f0a24a" stroke-width="19" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="232" y1="255" x2="286" y2="255"/>
+    <path d="M266 235 L288 255 L266 275"/>
+  </g>
+</svg>

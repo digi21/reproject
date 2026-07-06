@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="Reproject.SettingsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Reproject"
+    x:Uid="SettingsDialog"
+    Title="Settings"
+    PrimaryButtonText="Save"
+    CloseButtonText="Cancel"
+    DefaultButton="Primary"
+    PrimaryButtonClick="OnPrimary">
+
+    <ContentDialog.Resources>
+        <!-- The default ContentDialog max width (~548px) minus padding is narrower than the content,
+             which clipped the right edge (the Browse button); widen it so the 520px panel fits. -->
+        <x:Double x:Key="ContentDialogMaxWidth">640</x:Double>
+    </ContentDialog.Resources>
+
+    <StackPanel Width="520" Spacing="8">
+        <TextBlock x:Uid="SettingsModelsLabel" Text="Geoid model (grid) directory"
+                   Style="{ThemeResource BodyStrongTextBlockStyle}" />
+        <TextBlock x:Uid="SettingsModelsHint"
+                   Text="Folder where the app looks for geoid model files (e.g. the global EGM2008 grid, which is not shipped with the app)."
+                   TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+        <Grid ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0"
+                     Text="{x:Bind VM.ModelsDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Column="1" x:Uid="SettingsBrowseButton" Content="Browse…"
+                    Command="{x:Bind VM.BrowseCommand}" />
+        </Grid>
+
+        <Button x:Uid="SettingsOpenExplorerButton" Content="Open folder in Explorer"
+                Command="{x:Bind VM.OpenInExplorerCommand}" HorizontalAlignment="Left" />
+
+        <TextBlock x:Uid="SettingsRestartNote"
+                   Text="Changing the folder takes effect after restarting the app."
+                   TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+    </StackPanel>
+</ContentDialog>

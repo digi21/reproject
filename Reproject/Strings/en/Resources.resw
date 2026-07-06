@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="AppTitleText.Text" xml:space="preserve"><value>Reproject</value></data>
+  <data name="SourceLabel.Text" xml:space="preserve"><value>Source coordinate system</value></data>
+  <data name="TargetLabel.Text" xml:space="preserve"><value>Target coordinate system</value></data>
+  <data name="ImportButton.Content" xml:space="preserve"><value>Import…</value></data>
+  <data name="ExportButton.Content" xml:space="preserve"><value>Export…</value></data>
+  <data name="HintText.Text" xml:space="preserve"><value>One line per point; values separated by space, comma or tab.</value></data>
+  <data name="InputCaption.Text" xml:space="preserve"><value>Type or paste the coordinates to transform here</value></data>
+  <data name="OutputCaption.Text" xml:space="preserve"><value>Copy the transformed coordinates from here</value></data>
+  <data name="AboutLink.Content" xml:space="preserve"><value>About</value></data>
+  <data name="PickerDialog.Title" xml:space="preserve"><value>Select coordinate reference system</value></data>
+  <data name="PickerDialog.PrimaryButtonText" xml:space="preserve"><value>Select</value></data>
+  <data name="PickerDialog.CloseButtonText" xml:space="preserve"><value>Cancel</value></data>
+  <data name="SearchBox.PlaceholderText" xml:space="preserve"><value>Search by EPSG code or name…</value></data>
+  <data name="HorizontalLabel.Text" xml:space="preserve"><value>Horizontal coordinate system</value></data>
+  <data name="HorizontalSuggest.PlaceholderText" xml:space="preserve"><value>Search horizontal (projected / geographic)…</value></data>
+  <data name="VerticalLabel.Text" xml:space="preserve"><value>Vertical coordinate system</value></data>
+  <data name="UnknownVerticalCheck.Content" xml:space="preserve"><value>Unknown vertical</value></data>
+  <data name="VerticalSuggest.PlaceholderText" xml:space="preserve"><value>Search vertical…</value></data>
+  <data name="ImportPrjButton.Content" xml:space="preserve"><value>Import .prj…</value></data>
+  <data name="ValidateButton.Content" xml:space="preserve"><value>Validate</value></data>
+  <data name="ManualWktBox.PlaceholderText" xml:space="preserve"><value>Paste the coordinate system WKT here…</value></data>
+  <data name="RemoveFavButton.Content" xml:space="preserve"><value>Remove</value></data>
+  <data name="AxisOrderLabel.Text" xml:space="preserve"><value>Axis orientation</value></data>
+  <data name="AxisEastNorthItem.Content" xml:space="preserve"><value>East-North</value></data>
+  <data name="AxisNorthEastItem.Content" xml:space="preserve"><value>North-East</value></data>
+  <data name="CopyWktButton.Content" xml:space="preserve"><value>Copy WKT</value></data>
+  <data name="ExportPrjButton.Content" xml:space="preserve"><value>Export .prj…</value></data>
+  <data name="MemorizeButton.Content" xml:space="preserve"><value>Memorize</value></data>
+  <data name="AboutDialog.Title" xml:space="preserve"><value>About</value></data>
+  <data name="AboutDialog.CloseButtonText" xml:space="preserve"><value>Close</value></data>
+  <data name="AboutAppSubtitle.Text" xml:space="preserve"><value>Coordinate transformation between reference systems.</value></data>
+  <data name="AboutCrsKitDesc.Text" xml:space="preserve"><value>The coordinate reference and transformation library this application is built on.</value></data>
+  <data name="AboutEpsgHeading.Text" xml:space="preserve"><value>Reference system data (EPSG)</value></data>
+  <data name="AboutEpsgBody.Text" xml:space="preserve"><value>This product includes the EPSG Geodetic Parameter Dataset, owned by IOGP (International Association of Oil &amp; Gas Producers), used under the EPSG Dataset Terms of Use. The EPSG dataset is provided free of charge: the value of this application lies in its functionality, not in the EPSG data.</value></data>
+  <data name="AboutEpsgDisclaimer.Text" xml:space="preserve"><value>The EPSG Dataset is provided "AS IS", without warranty of any kind, express or implied, including those of merchantability or fitness for a particular purpose. The user assumes all risk as to its accuracy and use.</value></data>
+  <data name="AboutSqliteBody.Text" xml:space="preserve"><value>The EPSG database is stored with SQLite, public domain software.</value></data>
+  <data name="NoneSelected" xml:space="preserve"><value>(none selected)</value></data>
+  <data name="StatusIdentity" xml:space="preserve"><value>Identity transformation (source and target are equivalent).</value></data>
+  <data name="StatusTransformError" xml:space="preserve"><value>Could not create the transformation: {0}</value></data>
+  <data name="ErrExpectedValues" xml:space="preserve"><value>· error: expected {0} values</value></data>
+  <data name="ErrInvalidNumber" xml:space="preserve"><value>· error: invalid numeric value</value></data>
+  <data name="ErrLine" xml:space="preserve"><value>· error: {0}</value></data>
+  <data name="StatusTransformed" xml:space="preserve"><value>{0} line(s) transformed.</value></data>
+  <data name="StatusTransformedErrors" xml:space="preserve"><value>{0} line(s) transformed, {1} with errors.</value></data>
+  <data name="EpsgReady" xml:space="preserve"><value>EPSG database ready.</value></data>
+  <data name="EpsgPath" xml:space="preserve"><value>EPSG database: {0}</value></data>
+  <data name="EpsgError" xml:space="preserve"><value>Could not open the EPSG database: {0}</value></data>
+  <data name="AxisStandard" xml:space="preserve"><value>Standard</value></data>
+  <data name="CatGeographic2D" xml:space="preserve"><value>Geographic 2D</value></data>
+  <data name="CatGeographic3D" xml:space="preserve"><value>Geographic 3D</value></data>
+  <data name="CatProjected" xml:space="preserve"><value>Projected</value></data>
+  <data name="CatVertical" xml:space="preserve"><value>Vertical</value></data>
+  <data name="CatCompound" xml:space="preserve"><value>Compound (H+V)</value></data>
+  <data name="CatManual" xml:space="preserve"><value>Manual (WKT)</value></data>
+  <data name="CatFavorites" xml:space="preserve"><value>Favorites</value></data>
+  <data name="DetailNoSelection" xml:space="preserve"><value>(no selection)</value></data>
+  <data name="DetailNoName" xml:space="preserve"><value>(no name)</value></data>
+  <data name="DetailError" xml:space="preserve"><value>Error</value></data>
+  <data name="FileTypeText" xml:space="preserve"><value>Text</value></data>
+  <data name="FileTypePrj" xml:space="preserve"><value>ESRI projection</value></data>
+  <data name="PickSourceButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve"><value>Choose the source coordinate system</value></data>
+  <data name="PickTargetButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve"><value>Choose the target coordinate system</value></data>
+  <data name="ExportFileName" xml:space="preserve"><value>transformed-coordinates</value></data>
+  <data name="OperationDialog.Title" xml:space="preserve"><value>Select transformation</value></data>
+  <data name="OperationDialog.PrimaryButtonText" xml:space="preserve"><value>Select</value></data>
+  <data name="OperationDialog.CloseButtonText" xml:space="preserve"><value>Cancel</value></data>
+  <data name="OperationHint.Text" xml:space="preserve"><value>Several transformations are available. Pick one — they are ordered from most to least precise.</value></data>
+  <data name="OpAccuracy" xml:space="preserve"><value>Accuracy: {0} m</value></data>
+  <data name="OpAccuracyUnknown" xml:space="preserve"><value>Accuracy: unknown</value></data>
+  <data name="OpMethod" xml:space="preserve"><value>Method {0}</value></data>
+  <data name="OpScope" xml:space="preserve"><value>Scope: {0}</value></data>
+  <data name="OpRemarks" xml:space="preserve"><value>Remarks: {0}</value></data>
+  <data name="OpArea" xml:space="preserve"><value>Area of use: {0}</value></data>
+  <data name="OpGridFiles" xml:space="preserve"><value>Requires file: {0}</value></data>
+  <data name="OpDownload" xml:space="preserve"><value>Download {0}</value></data>
+  <data name="DownloadTitle" xml:space="preserve"><value>Download geoid model</value></data>
+  <data name="DownloadMessage" xml:space="preserve"><value>{0} ({1}) will be downloaded to your geoid models folder. Proceed?</value></data>
+  <data name="DownloadProceed" xml:space="preserve"><value>Download</value></data>
+  <data name="DownloadCancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="DownloadSizeUnknown" xml:space="preserve"><value>unknown size</value></data>
+  <data name="GridNeededTitle" xml:space="preserve"><value>Geoid model required</value></data>
+  <data name="GridNeededMessage" xml:space="preserve"><value>This transformation needs {0}. Download it and copy it into your geoid models folder: {1}</value></data>
+  <data name="GridOpenPage" xml:space="preserve"><value>Open download page</value></data>
+  <data name="GridOpenFolder" xml:space="preserve"><value>Open folder</value></data>
+  <data name="GridClose" xml:space="preserve"><value>Close</value></data>
+  <data name="SettingsLink.Content" xml:space="preserve"><value>Settings</value></data>
+  <data name="SettingsDialog.Title" xml:space="preserve"><value>Settings</value></data>
+  <data name="SettingsDialog.PrimaryButtonText" xml:space="preserve"><value>Save</value></data>
+  <data name="SettingsDialog.CloseButtonText" xml:space="preserve"><value>Cancel</value></data>
+  <data name="SettingsModelsLabel.Text" xml:space="preserve"><value>Geoid model (grid) directory</value></data>
+  <data name="SettingsModelsHint.Text" xml:space="preserve"><value>Folder where the app looks for geoid model files (e.g. the global EGM2008 grid, which is not shipped with the app).</value></data>
+  <data name="SettingsBrowseButton.Content" xml:space="preserve"><value>Browse…</value></data>
+  <data name="SettingsOpenExplorerButton.Content" xml:space="preserve"><value>Open folder in Explorer</value></data>
+  <data name="SettingsRestartNote.Text" xml:space="preserve"><value>Changing the folder takes effect after restarting the app.</value></data>
+</root>

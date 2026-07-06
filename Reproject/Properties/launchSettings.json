@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Reproject (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Reproject (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

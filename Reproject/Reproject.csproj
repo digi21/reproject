@@ -1,0 +1,104 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>Reproject</RootNamespace>
+    <!-- Fallback language when the OS language has no resources. -->
+    <DefaultLanguage>en</DefaultLanguage>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x64</Platforms>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <UseWinUI>true</UseWinUI>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Packaged (single-project MSIX) for the Microsoft Store. The Windows App SDK
+         runtime is framework-dependent (delivered/updated by the Store as a package
+         dependency); the .NET runtime is still bundled via the win-x64 RID. Build the
+         package with Project > Publish > Create App Packages (or msbuild
+         /p:GenerateAppxPackageOnBuild=true). -->
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <WindowsAppSDKSelfContained>false</WindowsAppSDKSelfContained>
+    <GenerateAppInstallerFile>false</GenerateAppInstallerFile>
+    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <AppxAutoIncrementPackageRevision>true</AppxAutoIncrementPackageRevision>
+    <AppxSymbolPackageEnabled>false</AppxSymbolPackageEnabled>
+    <!-- Embeds the icon in the .exe (Explorer / taskbar). -->
+    <ApplicationIcon>Assets\reproject.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Deployed next to the exe so AppWindow.SetIcon can load it at runtime. -->
+    <Content Include="Assets\reproject.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <!-- Shown in the About dialog (loaded via ms-appx). -->
+    <Content Include="Assets\reproject.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\crskit.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!-- MSIX visual assets referenced by Package.appxmanifest (placeholder art scaled from
+       the app icon; regenerate proper multi-scale assets with the VS Asset Generator). -->
+  <ItemGroup>
+    <Content Include="Assets\Square44x44Logo.png" />
+    <Content Include="Assets\Square71x71Logo.png" />
+    <Content Include="Assets\Square150x150Logo.png" />
+    <Content Include="Assets\Square310x310Logo.png" />
+    <Content Include="Assets\Wide310x150Logo.png" />
+    <Content Include="Assets\SplashScreen.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\LockScreenLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- EPSG database, shipped with the app so it works out of the box. The Spain geoid grids
+         (EGM08 REDNAP) are NO LONGER bundled: they are downloaded on demand from the IGN's own
+         server, so the installer redistributes no agency data. Data\ lives locally and is
+         git-ignored (large binaries); the EGM08_REDNAP*.txt files are excluded from packaging. -->
+    <Content Include="Data\**" Exclude="Data\EGM08_REDNAP*.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260416003" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1721" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CrsKitInterop.Projection\CrsKitInterop.Projection.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <!--
+    Ship the native C++/WinRT component and CrsKit's runtime DLLs next to the app exe AND
+    inside the MSIX payload. The C#-only project-reference chain does not carry these native
+    binaries, and files merely copied into the output folder are NOT added to the package
+    (that only ships known output groups). Declaring them as Content with a package-root Link
+    puts them in the payload output group, so they ship both loose (unpackaged run) and inside
+    the .msix (packaged run). CsWinRT needs CrsKitInterop.dll present to activate the
+    CrsKitInterop.* types — without it, activation throws COMException at startup.
+      - CrsKitInterop.dll          : the native WinRT impl.
+      - crskit(D).dll, sqlite3.dll : CrsKit + its sqlite dependency (vcpkg app-local step).
+    All three sit in the component's deterministic build output (CrsKitInterop\bin\$(Platform)\$(Configuration)),
+    which the solution builds before this project via the project-reference chain.
+  -->
+  <PropertyGroup>
+    <CrsKitComponentOut>$(MSBuildThisFileDirectory)..\CrsKitInterop\bin\$(Platform)\$(Configuration)</CrsKitComponentOut>
+    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+  </PropertyGroup>
+  <ItemGroup Condition="Exists('$(CrsKitComponentOut)')">
+    <Content Include="$(CrsKitComponentOut)\CrsKitInterop.dll;$(CrsKitComponentOut)\crskit*.dll;$(CrsKitComponentOut)\sqlite3.dll" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,10 @@
+{
+  "name": "crskitinterop",
+  "version": "0.0.0",
+  "dependencies": [
+    {
+      "name": "crskit",
+      "version>=": "0.3.0"
+    }
+  ]
+}

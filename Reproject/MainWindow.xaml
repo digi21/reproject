@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="Reproject.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Reproject">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Custom title bar (replaces the system one; the app title acts as the drag region) -->
+        <Border x:Name="AppTitleBar" Grid.Row="0" Height="40" Padding="16,0,0,0">
+            <TextBlock x:Uid="AppTitleText" Text="Reproject"
+                       VerticalAlignment="Center"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" />
+        </Border>
+
+        <!-- Content -->
+        <Grid Grid.Row="1" Padding="16,8,16,16" RowSpacing="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Source CRS -->
+            <Grid Grid.Row="0" ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="240" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Uid="SourceLabel" Grid.Column="0" VerticalAlignment="Center"
+                           Text="Sistema de coordenadas origen" />
+                <ComboBox Grid.Column="1" HorizontalAlignment="Stretch"
+                          ItemsSource="{x:Bind VM.RecentSystems}"
+                          SelectedItem="{x:Bind VM.SourceSelection, Mode=TwoWay}"
+                          DisplayMemberPath="DisplayName" />
+                <Button x:Uid="PickSourceButton" Grid.Column="2" Content="…" MinWidth="44" Command="{x:Bind VM.PickSourceCommand}"
+                        ToolTipService.ToolTip="Elegir sistema de coordenadas origen" />
+            </Grid>
+
+            <!-- Target CRS -->
+            <Grid Grid.Row="1" ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="240" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Uid="TargetLabel" Grid.Column="0" VerticalAlignment="Center"
+                           Text="Sistema de coordenadas destino" />
+                <ComboBox Grid.Column="1" HorizontalAlignment="Stretch"
+                          ItemsSource="{x:Bind VM.RecentSystems}"
+                          SelectedItem="{x:Bind VM.TargetSelection, Mode=TwoWay}"
+                          DisplayMemberPath="DisplayName" />
+                <Button x:Uid="PickTargetButton" Grid.Column="2" Content="…" MinWidth="44" Command="{x:Bind VM.PickTargetCommand}"
+                        ToolTipService.ToolTip="Elegir sistema de coordenadas destino" />
+            </Grid>
+
+            <!-- Toolbar + hint -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,4,0,0">
+                <Button x:Uid="ImportButton" Content="Importar…" Command="{x:Bind VM.ImportCommand}" />
+                <Button x:Uid="ExportButton" Content="Exportar…" Command="{x:Bind VM.ExportCommand}" />
+                <TextBlock x:Uid="HintText" VerticalAlignment="Center"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           Text="Una línea por punto; valores separados por espacio, coma o tabulador." />
+            </StackPanel>
+
+            <!-- Column captions -->
+            <Grid Grid.Row="3" ColumnSpacing="8" Margin="0,4,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock x:Uid="InputCaption" Text="Escribe o pega aquí las coordenadas a transformar" />
+                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                               Text="{x:Bind VM.SourceAxes, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <TextBlock x:Uid="OutputCaption" Text="Copia de aquí las coordenadas transformadas" />
+                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                               Text="{x:Bind VM.TargetAxes, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Text areas -->
+            <Grid Grid.Row="4" ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0"
+                         AcceptsReturn="True" TextWrapping="NoWrap" FontFamily="Consolas"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         Text="{x:Bind VM.InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Grid.Column="1"
+                         AcceptsReturn="True" IsReadOnly="True" TextWrapping="NoWrap" FontFamily="Consolas"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         Text="{x:Bind VM.OutputText, Mode=OneWay}" />
+            </Grid>
+
+            <!-- Status bar -->
+            <Grid Grid.Row="5" ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                           Text="{x:Bind VM.StatusMessage, Mode=OneWay}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           TextTrimming="CharacterEllipsis" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                    <HyperlinkButton x:Uid="SettingsLink" Content="Configuración" Command="{x:Bind VM.ShowSettingsCommand}" />
+                    <HyperlinkButton x:Uid="AboutLink" Content="Acerca de" Command="{x:Bind VM.ShowAboutCommand}" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Docked error banner: shows the full error (e.g. a missing geoid grid and its
+                 searched path), closable, instead of truncating it in the status bar. -->
+            <InfoBar Grid.Row="6" Severity="Error" Margin="0,8,0,0"
+                     IsOpen="{x:Bind VM.IsErrorOpen, Mode=TwoWay}"
+                     Message="{x:Bind VM.ErrorMessage, Mode=OneWay}" />
+        </Grid>
+    </Grid>
+</Window>

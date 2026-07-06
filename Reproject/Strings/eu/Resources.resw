@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="AppTitleText.Text" xml:space="preserve"><value>Reproject</value></data>
+  <data name="SourceLabel.Text" xml:space="preserve"><value>Jatorrizko koordenatu-sistema</value></data>
+  <data name="TargetLabel.Text" xml:space="preserve"><value>Helburuko koordenatu-sistema</value></data>
+  <data name="ImportButton.Content" xml:space="preserve"><value>Inportatu…</value></data>
+  <data name="ExportButton.Content" xml:space="preserve"><value>Esportatu…</value></data>
+  <data name="HintText.Text" xml:space="preserve"><value>Lerro bat puntu bakoitzeko; balioak zuriunez, komaz edo tabulazioz bereizita.</value></data>
+  <data name="InputCaption.Text" xml:space="preserve"><value>Idatzi edo itsatsi hemen transformatu beharreko koordenatuak</value></data>
+  <data name="OutputCaption.Text" xml:space="preserve"><value>Kopiatu hemendik transformatutako koordenatuak</value></data>
+  <data name="AboutLink.Content" xml:space="preserve"><value>Honi buruz</value></data>
+  <data name="PickerDialog.Title" xml:space="preserve"><value>Hautatu koordenatuen erreferentzia-sistema</value></data>
+  <data name="PickerDialog.PrimaryButtonText" xml:space="preserve"><value>Hautatu</value></data>
+  <data name="PickerDialog.CloseButtonText" xml:space="preserve"><value>Utzi</value></data>
+  <data name="SearchBox.PlaceholderText" xml:space="preserve"><value>Bilatu EPSG kodearen edo izenaren arabera…</value></data>
+  <data name="HorizontalLabel.Text" xml:space="preserve"><value>Koordenatu-sistema horizontala</value></data>
+  <data name="HorizontalSuggest.PlaceholderText" xml:space="preserve"><value>Bilatu horizontala (proiektatua / geografikoa)…</value></data>
+  <data name="VerticalLabel.Text" xml:space="preserve"><value>Koordenatu-sistema bertikala</value></data>
+  <data name="UnknownVerticalCheck.Content" xml:space="preserve"><value>Bertikal ezezaguna</value></data>
+  <data name="VerticalSuggest.PlaceholderText" xml:space="preserve"><value>Bilatu bertikala…</value></data>
+  <data name="ImportPrjButton.Content" xml:space="preserve"><value>Inportatu .prj…</value></data>
+  <data name="ValidateButton.Content" xml:space="preserve"><value>Balioztatu</value></data>
+  <data name="ManualWktBox.PlaceholderText" xml:space="preserve"><value>Itsatsi hemen koordenatu-sistemaren WKT…</value></data>
+  <data name="RemoveFavButton.Content" xml:space="preserve"><value>Kendu</value></data>
+  <data name="AxisOrderLabel.Text" xml:space="preserve"><value>Ardatzen orientazioa</value></data>
+  <data name="AxisEastNorthItem.Content" xml:space="preserve"><value>Ekialdea-Iparraldea</value></data>
+  <data name="AxisNorthEastItem.Content" xml:space="preserve"><value>Iparraldea-Ekialdea</value></data>
+  <data name="CopyWktButton.Content" xml:space="preserve"><value>Kopiatu WKT</value></data>
+  <data name="ExportPrjButton.Content" xml:space="preserve"><value>Esportatu .prj…</value></data>
+  <data name="MemorizeButton.Content" xml:space="preserve"><value>Gogoratu</value></data>
+  <data name="AboutDialog.Title" xml:space="preserve"><value>Honi buruz</value></data>
+  <data name="AboutDialog.CloseButtonText" xml:space="preserve"><value>Itxi</value></data>
+  <data name="AboutAppSubtitle.Text" xml:space="preserve"><value>Koordenatuen transformazioa erreferentzia-sistemen artean.</value></data>
+  <data name="AboutCrsKitDesc.Text" xml:space="preserve"><value>Aplikazio hau eraikitzeko oinarri den koordenatuen erreferentzia- eta transformazio-liburutegia.</value></data>
+  <data name="AboutEpsgHeading.Text" xml:space="preserve"><value>Erreferentzia-sistemen datuak (EPSG)</value></data>
+  <data name="AboutEpsgBody.Text" xml:space="preserve"><value>Produktu honek EPSG Geodetic Parameter Dataset-a barne hartzen du, IOGP-ren (International Association of Oil &amp; Gas Producers) jabetzakoa, EPSG Dataset Terms of Use-en arabera erabilia. EPSG datu-multzoa doan eskaintzen da: aplikazio honen balioa bere funtzionaltasunean dago, ez EPSG datuetan.</value></data>
+  <data name="AboutEpsgDisclaimer.Text" xml:space="preserve"><value>EPSG Dataset-a «DAGOEN BEZALA» ematen da, inolako bermerik gabe, esplizitu nahiz inplizitu, salgarritasunekoak edo helburu jakin baterako egokitasunekoak barne. Erabiltzaileak bere gain hartzen du zehaztasunari eta erabilerari dagokion arrisku osoa.</value></data>
+  <data name="AboutSqliteBody.Text" xml:space="preserve"><value>EPSG datu-basea SQLite-rekin gordetzen da, domeinu publikoko softwarea.</value></data>
+  <data name="NoneSelected" xml:space="preserve"><value>(hautatu gabe)</value></data>
+  <data name="StatusIdentity" xml:space="preserve"><value>Identitate-transformazioa (jatorria eta helburua baliokideak dira).</value></data>
+  <data name="StatusTransformError" xml:space="preserve"><value>Ezin izan da transformazioa sortu: {0}</value></data>
+  <data name="ErrExpectedValues" xml:space="preserve"><value>· errorea: {0} balio espero ziren</value></data>
+  <data name="ErrInvalidNumber" xml:space="preserve"><value>· errorea: zenbakizko balio baliogabea</value></data>
+  <data name="ErrLine" xml:space="preserve"><value>· errorea: {0}</value></data>
+  <data name="StatusTransformed" xml:space="preserve"><value>{0} lerro transformatu.</value></data>
+  <data name="StatusTransformedErrors" xml:space="preserve"><value>{0} lerro transformatu, {1} errorez.</value></data>
+  <data name="EpsgReady" xml:space="preserve"><value>EPSG datu-basea prest.</value></data>
+  <data name="EpsgPath" xml:space="preserve"><value>EPSG datu-basea: {0}</value></data>
+  <data name="EpsgError" xml:space="preserve"><value>Ezin izan da EPSG datu-basea ireki: {0}</value></data>
+  <data name="AxisStandard" xml:space="preserve"><value>Estandarra</value></data>
+  <data name="CatGeographic2D" xml:space="preserve"><value>Geografikoa 2D</value></data>
+  <data name="CatGeographic3D" xml:space="preserve"><value>Geografikoa 3D</value></data>
+  <data name="CatProjected" xml:space="preserve"><value>Proiektatua</value></data>
+  <data name="CatVertical" xml:space="preserve"><value>Bertikala</value></data>
+  <data name="CatCompound" xml:space="preserve"><value>Konposatua (H+V)</value></data>
+  <data name="CatManual" xml:space="preserve"><value>Eskuz (WKT)</value></data>
+  <data name="CatFavorites" xml:space="preserve"><value>Gogokoak</value></data>
+  <data name="DetailNoSelection" xml:space="preserve"><value>(hautaketarik ez)</value></data>
+  <data name="DetailNoName" xml:space="preserve"><value>(izenik gabe)</value></data>
+  <data name="DetailError" xml:space="preserve"><value>Errorea</value></data>
+  <data name="FileTypeText" xml:space="preserve"><value>Testua</value></data>
+  <data name="FileTypePrj" xml:space="preserve"><value>ESRI proiekzioa</value></data>
+  <data name="PickSourceButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve"><value>Aukeratu jatorrizko koordenatu-sistema</value></data>
+  <data name="PickTargetButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve"><value>Aukeratu helburuko koordenatu-sistema</value></data>
+  <data name="ExportFileName" xml:space="preserve"><value>transformatutako-koordenatuak</value></data>
+  <data name="DownloadCancel" xml:space="preserve"><value>Utzi</value></data>
+  <data name="DownloadMessage" xml:space="preserve"><value>{0} ({1}) zure geoide-modeloen karpetara deskargatuko da. Aurrera egin?</value></data>
+  <data name="DownloadProceed" xml:space="preserve"><value>Deskargatu</value></data>
+  <data name="DownloadSizeUnknown" xml:space="preserve"><value>tamaina ezezaguna</value></data>
+  <data name="DownloadTitle" xml:space="preserve"><value>Deskargatu geoide-modeloa</value></data>
+  <data name="GridClose" xml:space="preserve"><value>Itxi</value></data>
+  <data name="GridNeededMessage" xml:space="preserve"><value>Transformazio honek {0} behar du. Deskargatu eta kopiatu zure geoide-modeloen karpetan: {1}</value></data>
+  <data name="GridNeededTitle" xml:space="preserve"><value>Geoide-modeloa beharrezkoa</value></data>
+  <data name="GridOpenFolder" xml:space="preserve"><value>Ireki karpeta</value></data>
+  <data name="GridOpenPage" xml:space="preserve"><value>Ireki deskarga-orria</value></data>
+  <data name="OpAccuracy" xml:space="preserve"><value>Zehaztasuna: {0} m</value></data>
+  <data name="OpAccuracyUnknown" xml:space="preserve"><value>Zehaztasuna: ezezaguna</value></data>
+  <data name="OpArea" xml:space="preserve"><value>Erabilera-eremua: {0}</value></data>
+  <data name="OpDownload" xml:space="preserve"><value>Deskargatu {0}</value></data>
+  <data name="OpGridFiles" xml:space="preserve"><value>Fitxategia behar du: {0}</value></data>
+  <data name="OpMethod" xml:space="preserve"><value>{0} metodoa</value></data>
+  <data name="OpRemarks" xml:space="preserve"><value>Oharrak: {0}</value></data>
+  <data name="OpScope" xml:space="preserve"><value>Esparrua: {0}</value></data>
+  <data name="OperationDialog.CloseButtonText" xml:space="preserve"><value>Utzi</value></data>
+  <data name="OperationDialog.PrimaryButtonText" xml:space="preserve"><value>Hautatu</value></data>
+  <data name="OperationDialog.Title" xml:space="preserve"><value>Hautatu transformazioa</value></data>
+  <data name="OperationHint.Text" xml:space="preserve"><value>Hainbat transformazio daude eskuragarri. Aukeratu bat — zehatzenetik zehaztasun gutxienekora ordenatuta daude.</value></data>
+  <data name="SettingsBrowseButton.Content" xml:space="preserve"><value>Arakatu…</value></data>
+  <data name="SettingsDialog.CloseButtonText" xml:space="preserve"><value>Utzi</value></data>
+  <data name="SettingsDialog.PrimaryButtonText" xml:space="preserve"><value>Gorde</value></data>
+  <data name="SettingsDialog.Title" xml:space="preserve"><value>Ezarpenak</value></data>
+  <data name="SettingsLink.Content" xml:space="preserve"><value>Ezarpenak</value></data>
+  <data name="SettingsModelsHint.Text" xml:space="preserve"><value>Aplikazioak geoide-modeloen fitxategiak bilatzen dituen karpeta (adib. EGM2008 sareta globala, aplikazioarekin batera ez datorrena).</value></data>
+  <data name="SettingsModelsLabel.Text" xml:space="preserve"><value>Geoide-modeloen (sareten) direktorioa</value></data>
+  <data name="SettingsOpenExplorerButton.Content" xml:space="preserve"><value>Ireki karpeta Explorer-en</value></data>
+  <data name="SettingsRestartNote.Text" xml:space="preserve"><value>Karpeta aldatzeak aplikazioa berrabiarazi ondoren du eragina.</value></data>
+</root>

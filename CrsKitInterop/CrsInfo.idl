@@ -1,0 +1,11 @@
+namespace CrsKitInterop
+{
+    // A lightweight value object describing one coordinate reference system
+    // in the EPSG catalogue. Produced by CrsEngine.Enumerate for the picker UI.
+    runtimeclass CrsInfo
+    {
+        Int32  Code{ get; };
+        String Name{ get; };
+        String Kind{ get; };   // "projected", "geographic 2D", "geographic 3D", "compound", "vertical", ...
+    }
+}
