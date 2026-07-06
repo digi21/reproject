@@ -265,6 +265,3 @@ vcpkg_installed/
 # App data shipped in the installer but kept out of the (public) repo: large EPSG DB +
 # IGN geoid grids (their own redistribution terms). Present locally; packaged via csproj Content.
 Reproject/Data/
-
-# Local-only design notes (kept out of the public repo)
-docs/

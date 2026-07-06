@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reproject — Privacy Policy</title>
+  <meta name="description" content="Privacy policy for Reproject, a coordinate transformation app by Dreaming With Objects S.L." />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #1f2328;
+      --muted: #57606a;
+      --accent: #0969da;
+      --card: #f6f8fa;
+      --border: #d0d7de;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #e6edf3;
+        --muted: #9198a1;
+        --accent: #4493f8;
+        --card: #161b22;
+        --border: #30363d;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+      font-size: 17px;
+    }
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.25rem 5rem;
+    }
+    h1 { font-size: 2rem; margin: 0 0 .25rem; line-height: 1.2; }
+    h2 { font-size: 1.25rem; margin: 2.5rem 0 .5rem; }
+    p, li { color: var(--fg); }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .updated { color: var(--muted); font-size: .95rem; margin-top: 0; }
+    .summary {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin: 1.75rem 0;
+    }
+    .summary strong { display: block; margin-bottom: .35rem; }
+    ul { padding-left: 1.35rem; }
+    li { margin: .35rem 0; }
+    footer {
+      margin-top: 3.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .9rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Reproject — Privacy Policy</h1>
+    <p class="updated">Last updated: 6 July 2026</p>
+
+    <p>
+      This privacy policy describes how <strong>Reproject</strong> (the “app”), published by
+      <strong>Dreaming With Objects S.L.</strong> (“we”, “us”), handles your information. Reproject is a
+      desktop application for transforming coordinates between coordinate reference systems.
+    </p>
+
+    <div class="summary">
+      <strong>In short</strong>
+      Reproject does not collect, store, or transmit any personal information to us. We do not use
+      accounts, telemetry, analytics, advertising, or tracking of any kind. Everything the app stores
+      stays on your device.
+    </div>
+
+    <h2>1. Information we collect</h2>
+    <p>
+      <strong>None.</strong> The app has no user accounts and does not gather, log, or send us any
+      personal data or usage statistics. We operate no server that receives information about you.
+    </p>
+
+    <h2>2. Data stored on your device</h2>
+    <p>
+      Your settings, any coordinate reference or geoid grid files you download, and a cached copy of the
+      grid-source catalog (see below) are stored locally on your computer, in the app’s local application
+      data folder. This information never leaves your device and is not shared with us or anyone else.
+    </p>
+
+    <h2>3. Network connections</h2>
+    <p>Reproject connects to the internet only for the following, strictly functional purposes:</p>
+    <ul>
+      <li>
+        <strong>Grid-source catalog.</strong> On startup, the app downloads a small public JSON file
+        that lists where official coordinate/geoid grids can be obtained. It is hosted on GitHub
+        (<code>raw.githubusercontent.com</code>). The result is cached locally so the app works offline
+        afterwards.
+      </li>
+      <li>
+        <strong>Grid downloads (only when you ask).</strong> When you choose to download a specific grid
+        file, the app fetches it directly from the official third-party agency that provides it (for
+        example, the U.S. National Geospatial-Intelligence Agency or Spain’s Instituto Geográfico
+        Nacional).
+      </li>
+    </ul>
+    <p>
+      As with any internet request, these connections make your device’s IP address visible to the
+      servers you contact (GitHub and, if you download a grid, the relevant agency). Those parties
+      process that information under their own privacy policies — for example,
+      <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub’s privacy statement</a>.
+      We do not receive, collect, or store your IP address or any other data from these requests.
+    </p>
+
+    <h2>4. Third-party services</h2>
+    <p>
+      Reproject relies on <a href="https://github.com" rel="noopener">GitHub</a> to host the grid-source
+      catalog, and on the official geodetic agencies whose grids you may choose to download. We are not
+      affiliated with those agencies, and their websites and downloads are governed by their own terms
+      and privacy policies.
+    </p>
+
+    <h2>5. Children’s privacy</h2>
+    <p>
+      Reproject is a professional tool and is not directed at children. In any case, it collects no
+      personal information from anyone.
+    </p>
+
+    <h2>6. Changes to this policy</h2>
+    <p>
+      If we change this policy, we will update the “Last updated” date above and publish the new version
+      at this same address.
+    </p>
+
+    <h2>7. Contact</h2>
+    <p>
+      If you have any questions about this privacy policy, please open an issue at
+      <a href="https://github.com/digi21/reproject/issues" rel="noopener">github.com/digi21/reproject/issues</a>.
+    </p>
+
+    <footer>
+      © 2026 Dreaming With Objects S.L. · Reproject
+    </footer>
+  </main>
+</body>
+</html>
