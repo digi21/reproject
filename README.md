@@ -8,6 +8,16 @@
 <p align="center">Convert coordinates between reference systems — a fast, modern Windows app.</p>
 
 <p align="center">
+  <a href="https://apps.microsoft.com/detail/9PFMLFNXDQLN">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://get.microsoft.com/images/en-us%20light.svg" />
+      <img src="https://get.microsoft.com/images/en-us%20dark.svg" width="220" alt="Get it from Microsoft Store" />
+    </picture>
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://apps.microsoft.com/detail/9PFMLFNXDQLN"><img alt="Microsoft Store" src="https://img.shields.io/badge/Microsoft%20Store-Reproject-0078D6?logo=microsoftstore&logoColor=white"></a>
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows-0078D6">
   <img alt="WinUI 3" src="https://img.shields.io/badge/UI-WinUI%203-5C2D91">
   <img alt=".NET 10" src="https://img.shields.io/badge/.NET-10-512BD4">
