@@ -10,7 +10,7 @@
   <Identity
     Name="5B38D4F4.reproject"
     Publisher="CN=02FE0697-3F6E-4151-A412-405933DF5B95"
-    Version="1.0.2.0" />
+    Version="1.0.0.0" />
 
   <Properties>
     <DisplayName>Reproject</DisplayName>
