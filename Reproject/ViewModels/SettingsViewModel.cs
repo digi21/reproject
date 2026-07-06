@@ -1,8 +1,9 @@
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Windows.Storage;
+using Windows.System;
 
 namespace Reproject;
 
@@ -32,14 +33,16 @@ public sealed partial class SettingsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void OpenInExplorer()
+    private async Task OpenInExplorerAsync()
     {
         var dir = ModelsDirectory?.Trim();
         if (string.IsNullOrEmpty(dir)) return;
         try
         {
             Directory.CreateDirectory(dir);   // create it if new, so the user can paste a file into it
-            Process.Start(new ProcessStartInfo { FileName = dir, UseShellExecute = true });
+            // Launcher (WinRT) instead of Process.Start: the packaged-app-supported way to open a
+            // folder, and it keeps the app clean of "launch process" APIs restricted in Windows S mode.
+            await Launcher.LaunchFolderAsync(await StorageFolder.GetFolderFromPathAsync(dir));
         }
         catch { /* opening the folder is best-effort */ }
     }
