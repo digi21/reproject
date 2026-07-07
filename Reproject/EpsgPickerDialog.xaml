@@ -64,39 +64,66 @@
                     </ListView>
                 </Grid>
 
-                <!-- Compound mode (horizontal + vertical) -->
-                <StackPanel Spacing="8" Visibility="{x:Bind VM.IsCompoundMode, Mode=OneWay, Converter={StaticResource BoolToVis}}">
-                    <TextBlock x:Uid="HorizontalLabel" Text="Sistema de coordenadas horizontal" Style="{ThemeResource BodyStrongTextBlockStyle}" />
-                    <AutoSuggestBox x:Uid="HorizontalSuggest" PlaceholderText="Buscar horizontal (proyectado / geográfico)…"
-                                    ItemsSource="{x:Bind VM.HorizontalSuggestions, Mode=OneWay}"
-                                    Text="{x:Bind VM.HorizontalText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    TextMemberPath="Display" QueryIcon="Find"
-                                    TextChanged="OnHorizontalTextChanged"
-                                    SuggestionChosen="OnHorizontalChosen">
-                        <AutoSuggestBox.ItemTemplate>
-                            <DataTemplate x:DataType="local:CrsRow">
-                                <TextBlock Text="{x:Bind Display}" TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </AutoSuggestBox.ItemTemplate>
-                    </AutoSuggestBox>
-                    <TextBlock x:Uid="VerticalLabel" Text="Sistema de coordenadas vertical" Style="{ThemeResource BodyStrongTextBlockStyle}"
-                               Margin="0,8,0,0" />
-                    <CheckBox x:Uid="UnknownVerticalCheck" Content="Vertical desconocido"
-                              IsChecked="{x:Bind VM.UnknownVertical, Mode=TwoWay}" />
-                    <AutoSuggestBox x:Uid="VerticalSuggest" PlaceholderText="Buscar vertical…"
-                                    ItemsSource="{x:Bind VM.VerticalSuggestions, Mode=OneWay}"
-                                    IsEnabled="{x:Bind VM.CompoundVerticalEnabled, Mode=OneWay}"
-                                    Text="{x:Bind VM.VerticalText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    TextMemberPath="Display" QueryIcon="Find"
-                                    TextChanged="OnVerticalTextChanged"
-                                    SuggestionChosen="OnVerticalChosen">
-                        <AutoSuggestBox.ItemTemplate>
-                            <DataTemplate x:DataType="local:CrsRow">
-                                <TextBlock Text="{x:Bind Display}" TextTrimming="CharacterEllipsis" />
-                            </DataTemplate>
-                        </AutoSuggestBox.ItemTemplate>
-                    </AutoSuggestBox>
-                </StackPanel>
+                <!-- Compound mode (horizontal + vertical): browse each full list side by side, filter live -->
+                <Grid ColumnSpacing="12" Visibility="{x:Bind VM.IsCompoundMode, Mode=OneWay, Converter={StaticResource BoolToVis}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Horizontal -->
+                    <Grid Grid.Column="0" RowSpacing="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Uid="HorizontalLabel" Grid.Row="0" Text="Sistema de coordenadas horizontal"
+                                   Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                        <TextBox x:Uid="HorizontalSuggest" Grid.Row="1" PlaceholderText="Buscar horizontal (proyectado / geográfico)…"
+                                 Text="{x:Bind VM.HorizontalText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <ListView Grid.Row="2" SelectionMode="Single"
+                                  ItemsSource="{x:Bind VM.HorizontalItems, Mode=OneWay}"
+                                  SelectedItem="{x:Bind VM.SelectedHorizontal, Mode=TwoWay}"
+                                  DoubleTapped="OnItemDoubleTapped"
+                                  BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="local:CrsRow">
+                                    <TextBlock Text="{x:Bind Display}" TextTrimming="CharacterEllipsis" Padding="0,2" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+
+                    <!-- Vertical -->
+                    <Grid Grid.Column="1" RowSpacing="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Uid="VerticalLabel" Grid.Row="0" Text="Sistema de coordenadas vertical"
+                                   Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                        <CheckBox x:Uid="UnknownVerticalCheck" Grid.Row="1" Content="Vertical desconocido"
+                                  IsChecked="{x:Bind VM.UnknownVertical, Mode=TwoWay}" />
+                        <TextBox x:Uid="VerticalSuggest" Grid.Row="2" PlaceholderText="Buscar vertical…"
+                                 IsEnabled="{x:Bind VM.CompoundVerticalEnabled, Mode=OneWay}"
+                                 Text="{x:Bind VM.VerticalText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <ListView Grid.Row="3" SelectionMode="Single"
+                                  IsEnabled="{x:Bind VM.CompoundVerticalEnabled, Mode=OneWay}"
+                                  ItemsSource="{x:Bind VM.VerticalItems, Mode=OneWay}"
+                                  SelectedItem="{x:Bind VM.SelectedVertical, Mode=TwoWay}"
+                                  DoubleTapped="OnItemDoubleTapped"
+                                  BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="local:CrsRow">
+                                    <TextBlock Text="{x:Bind Display}" TextTrimming="CharacterEllipsis" Padding="0,2" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Grid>
 
                 <!-- Manual WKT mode -->
                 <Grid RowSpacing="8" Visibility="{x:Bind VM.IsManualMode, Mode=OneWay, Converter={StaticResource BoolToVis}}">

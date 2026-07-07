@@ -34,9 +34,8 @@ public partial class EpsgPickerViewModel : ObservableObject
     private string _mode = "list";
     private string? _kind;
     private List<CrsRow>? _listRows;     // every row of the current list kind (the full, unfiltered set)
-    private List<CrsRow>? _mergedHorizontal;
-    private CrsRow? _compoundH;
-    private CrsRow? _compoundV;
+    private List<CrsRow>? _mergedHorizontal;   // the horizontal universe (projected + geographic), cached
+    private List<CrsRow>? _verticalRows;       // every vertical system, for the vertical browse list
     private string _candidateName = string.Empty;
     private string _candidateWkt = string.Empty;
 
@@ -53,6 +52,8 @@ public partial class EpsgPickerViewModel : ObservableObject
 
         ListText = string.Empty;
         ListItems = Array.Empty<CrsRow>();
+        HorizontalItems = Array.Empty<CrsRow>();
+        VerticalItems = Array.Empty<CrsRow>();
         ManualWkt = string.Empty;
         WktPreview = string.Empty;
         HorizontalText = string.Empty;
@@ -68,8 +69,6 @@ public partial class EpsgPickerViewModel : ObservableObject
     // ---- bound collections / result -----------------------------------------
 
     public IReadOnlyList<string> Categories { get; }
-    public ObservableCollection<CrsRow> HorizontalSuggestions { get; } = new();
-    public ObservableCollection<CrsRow> VerticalSuggestions { get; } = new();
     public ObservableCollection<CrsSelection> Favorites { get; } = new();
 
     // The chosen CRS once the user confirms, or null.
@@ -99,9 +98,13 @@ public partial class EpsgPickerViewModel : ObservableObject
     [ObservableProperty] public partial string WktPreview { get; set; }
     [ObservableProperty] public partial bool CanSelect { get; set; }
     [ObservableProperty] public partial bool IsBusy { get; set; }
-    // Text shown in the compound search boxes; bound TwoWay so restoring a selection fills them in.
+    // Compound mode: each half is a live-filtered browse list (text filters, selection picks a row).
     [ObservableProperty] public partial string HorizontalText { get; set; }
+    [ObservableProperty] public partial IReadOnlyList<CrsRow> HorizontalItems { get; set; }
+    [ObservableProperty] public partial CrsRow? SelectedHorizontal { get; set; }
     [ObservableProperty] public partial string VerticalText { get; set; }
+    [ObservableProperty] public partial IReadOnlyList<CrsRow> VerticalItems { get; set; }
+    [ObservableProperty] public partial CrsRow? SelectedVertical { get; set; }
 
     // ---- category switching --------------------------------------------------
 
@@ -245,12 +248,15 @@ public partial class EpsgPickerViewModel : ObservableObject
     private void PrepareCompound()
     {
         AxisOrderEnabled = false;
-        _compoundH = null;
-        _compoundV = null;
+        SelectedHorizontal = null;
+        SelectedVertical = null;
+        HorizontalText = string.Empty;
+        VerticalText = string.Empty;
         UnknownVertical = false;
         CompoundVerticalEnabled = true;
-        HorizontalSuggestions.Clear();
-        VerticalSuggestions.Clear();
+        _verticalRows = GetRows("vertical").ToList();
+        RefilterHorizontal();
+        RefilterVertical();
     }
 
     private List<CrsRow> MergedHorizontal() =>
@@ -259,29 +265,16 @@ public partial class EpsgPickerViewModel : ObservableObject
             .Concat(GetRows("geographic 3D"))
             .OrderBy(r => r.Code).ToList();
 
-    public void UpdateHorizontalSuggestions(string text)
-    {
-        HorizontalSuggestions.Clear();
-        foreach (var r in Filter(MergedHorizontal(), text).Take(50)) HorizontalSuggestions.Add(r);
-    }
+    private void RefilterHorizontal() =>
+        HorizontalItems = Filter(MergedHorizontal(), HorizontalText).ToList();
 
-    public void ChooseHorizontal(object? item)
-    {
-        _compoundH = item as CrsRow;
-        RecomputeCompound();
-    }
+    private void RefilterVertical() =>
+        VerticalItems = _verticalRows is null ? Array.Empty<CrsRow>() : Filter(_verticalRows, VerticalText).ToList();
 
-    public void UpdateVerticalSuggestions(string text)
-    {
-        VerticalSuggestions.Clear();
-        foreach (var r in Filter(GetRows("vertical"), text).Take(50)) VerticalSuggestions.Add(r);
-    }
-
-    public void ChooseVertical(object? item)
-    {
-        _compoundV = item as CrsRow;
-        RecomputeCompound();
-    }
+    partial void OnHorizontalTextChanged(string value) => RefilterHorizontal();
+    partial void OnVerticalTextChanged(string value) => RefilterVertical();
+    partial void OnSelectedHorizontalChanged(CrsRow? value) => RecomputeCompound();
+    partial void OnSelectedVerticalChanged(CrsRow? value) => RecomputeCompound();
 
     partial void OnUnknownVerticalChanged(bool value)
     {
@@ -291,20 +284,20 @@ public partial class EpsgPickerViewModel : ObservableObject
 
     private void RecomputeCompound()
     {
-        if (_compoundH is null) { ClearCandidate(); ShowNameOnly(string.Empty); return; }
+        if (SelectedHorizontal is null) { ClearCandidate(); ShowNameOnly(string.Empty); return; }
         try
         {
-            try { ShowDetails(_crs.GetDetails(_compoundH.Code)); } catch { /* keep going */ }
+            try { ShowDetails(_crs.GetDetails(SelectedHorizontal.Code)); } catch { /* keep going */ }
 
             if (UnknownVertical)
             {
-                var wkt = _crs.GetWktWithAxisOrder(_compoundH.Code, CrsAxisOrder.Default);
-                SetCandidate(_compoundH.Name, wkt);
+                var wkt = _crs.GetWktWithAxisOrder(SelectedHorizontal.Code, CrsAxisOrder.Default);
+                SetCandidate(SelectedHorizontal.Name, wkt);
             }
-            else if (_compoundV is not null)
+            else if (SelectedVertical is not null)
             {
-                var wkt = _crs.GetCompoundWkt(_compoundH.Code, _compoundV.Code);
-                SetCandidate($"{_compoundH.Name} + {_compoundV.Name}", wkt);
+                var wkt = _crs.GetCompoundWkt(SelectedHorizontal.Code, SelectedVertical.Code);
+                SetCandidate($"{SelectedHorizontal.Name} + {SelectedVertical.Name}", wkt);
             }
             else
             {
@@ -401,8 +394,8 @@ public partial class EpsgPickerViewModel : ObservableObject
         {
             "list" => new CrsPickState(SelectedCategoryIndex, Code: SelectedListItem?.Code, AxisOrder: SelectedAxisOrderIndex),
             "compound" => new CrsPickState(SelectedCategoryIndex,
-                              HorizontalCode: _compoundH?.Code,
-                              VerticalCode: UnknownVertical ? null : _compoundV?.Code,
+                              HorizontalCode: SelectedHorizontal?.Code,
+                              VerticalCode: UnknownVertical ? null : SelectedVertical?.Code,
                               UnknownVertical: UnknownVertical),
             "manual" => new CrsPickState(SelectedCategoryIndex, ManualWkt: _candidateWkt),
             _ => SelectedFavorite?.Pick,   // favorites: keep the favorite's own recipe
@@ -436,14 +429,10 @@ public partial class EpsgPickerViewModel : ObservableObject
 
             case "compound":
                 UnknownVertical = pick.UnknownVertical;
-                _compoundH = pick.HorizontalCode is int h
+                SelectedHorizontal = pick.HorizontalCode is int h
                     ? MergedHorizontal().FirstOrDefault(r => r.Code == h) : null;
-                HorizontalText = _compoundH?.Display ?? string.Empty;
                 if (!pick.UnknownVertical && pick.VerticalCode is int v)
-                {
-                    _compoundV = GetRows("vertical").FirstOrDefault(r => r.Code == v);
-                    VerticalText = _compoundV?.Display ?? string.Empty;
-                }
+                    SelectedVertical = _verticalRows?.FirstOrDefault(r => r.Code == v);
                 RecomputeCompound();
                 break;
 
