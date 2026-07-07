@@ -42,21 +42,27 @@
             <!-- Mode panels (only one visible at a time) -->
             <Grid Grid.Row="0">
 
-                <!-- List mode (geographic 2D/3D, projected, vertical): a type-to-search box, like compound -->
-                <StackPanel Spacing="8" Visibility="{x:Bind VM.IsListMode, Mode=OneWay, Converter={StaticResource BoolToVis}}">
-                    <AutoSuggestBox x:Uid="SearchBox" PlaceholderText="Buscar por código EPSG o nombre…"
-                                    ItemsSource="{x:Bind VM.ListSuggestions, Mode=OneWay}"
-                                    Text="{x:Bind VM.ListText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    TextMemberPath="Display" QueryIcon="Find"
-                                    TextChanged="OnListTextChanged"
-                                    SuggestionChosen="OnListChosen">
-                        <AutoSuggestBox.ItemTemplate>
+                <!-- List mode (geographic 2D/3D, projected, vertical): browse the whole list,
+                     filter it live by typing. The list shows every system of the kind up front. -->
+                <Grid RowSpacing="8" Visibility="{x:Bind VM.IsListMode, Mode=OneWay, Converter={StaticResource BoolToVis}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBox x:Uid="SearchBox" Grid.Row="0" PlaceholderText="Buscar por código EPSG o nombre…"
+                             Text="{x:Bind VM.ListText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <ListView Grid.Row="1" SelectionMode="Single"
+                              ItemsSource="{x:Bind VM.ListItems, Mode=OneWay}"
+                              SelectedItem="{x:Bind VM.SelectedListItem, Mode=TwoWay}"
+                              DoubleTapped="OnItemDoubleTapped"
+                              BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                        <ListView.ItemTemplate>
                             <DataTemplate x:DataType="local:CrsRow">
-                                <TextBlock Text="{x:Bind Display}" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Text="{x:Bind Display}" TextTrimming="CharacterEllipsis" Padding="0,2" />
                             </DataTemplate>
-                        </AutoSuggestBox.ItemTemplate>
-                    </AutoSuggestBox>
-                </StackPanel>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
 
                 <!-- Compound mode (horizontal + vertical) -->
                 <StackPanel Spacing="8" Visibility="{x:Bind VM.IsCompoundMode, Mode=OneWay, Converter={StaticResource BoolToVis}}">

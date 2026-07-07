@@ -31,14 +31,6 @@ public sealed partial class EpsgPickerDialog : ContentDialog
     private void OnVerticalChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args) =>
         VM.ChooseVertical(args.SelectedItem);
 
-    private void OnListTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-    {
-        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput) VM.UpdateListSuggestions(sender.Text);
-    }
-
-    private void OnListChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args) =>
-        VM.ChooseListItem(args.SelectedItem);
-
     private void OnPrimary(ContentDialog sender, ContentDialogButtonClickEventArgs args)
     {
         if (!VM.Confirm()) args.Cancel = true;

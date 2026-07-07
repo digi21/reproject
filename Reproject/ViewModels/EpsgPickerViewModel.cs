@@ -33,8 +33,7 @@ public partial class EpsgPickerViewModel : ObservableObject
 
     private string _mode = "list";
     private string? _kind;
-    private List<CrsRow>? _listRows;     // rows of the current list kind (cached for the suggest box)
-    private CrsRow? _selectedListRow;    // the CRS chosen in list mode
+    private List<CrsRow>? _listRows;     // every row of the current list kind (the full, unfiltered set)
     private List<CrsRow>? _mergedHorizontal;
     private CrsRow? _compoundH;
     private CrsRow? _compoundV;
@@ -53,6 +52,7 @@ public partial class EpsgPickerViewModel : ObservableObject
         Categories = CategoryDefs.Select(c => _localizer.Get(c.LabelKey)).ToList();
 
         ListText = string.Empty;
+        ListItems = Array.Empty<CrsRow>();
         ManualWkt = string.Empty;
         WktPreview = string.Empty;
         HorizontalText = string.Empty;
@@ -68,7 +68,6 @@ public partial class EpsgPickerViewModel : ObservableObject
     // ---- bound collections / result -----------------------------------------
 
     public IReadOnlyList<string> Categories { get; }
-    public ObservableCollection<CrsRow> ListSuggestions { get; } = new();
     public ObservableCollection<CrsRow> HorizontalSuggestions { get; } = new();
     public ObservableCollection<CrsRow> VerticalSuggestions { get; } = new();
     public ObservableCollection<CrsSelection> Favorites { get; } = new();
@@ -84,6 +83,9 @@ public partial class EpsgPickerViewModel : ObservableObject
     [ObservableProperty] public partial bool IsManualMode { get; set; }
     [ObservableProperty] public partial bool IsFavoritesMode { get; set; }
     [ObservableProperty] public partial string ListText { get; set; }
+    // The full set of rows shown in the list, filtered live by ListText, and the row selected in it.
+    [ObservableProperty] public partial IReadOnlyList<CrsRow> ListItems { get; set; }
+    [ObservableProperty] public partial CrsRow? SelectedListItem { get; set; }
     [ObservableProperty] public partial string DetailName { get; set; }
     [ObservableProperty] public partial string DetailMeta { get; set; }
     [ObservableProperty] public partial string DetailDatum { get; set; }
@@ -166,36 +168,36 @@ public partial class EpsgPickerViewModel : ObservableObject
         });
     }
 
-    // Load the current list kind's rows and reset the box (mirrors PrepareCompound).
+    // Load the current list kind's rows and show them all up front (mirrors PrepareCompound).
     private void PrepareList()
     {
         AxisOrderEnabled = true;
-        _selectedListRow = null;
+        SelectedListItem = null;
         ListText = string.Empty;
-        ListSuggestions.Clear();
         _listRows = _kind is null ? null : GetRows(_kind).ToList();
+        RefilterList();
     }
 
-    public void UpdateListSuggestions(string text)
-    {
-        ListSuggestions.Clear();
-        if (_listRows is null) return;
-        foreach (var r in Filter(_listRows, text).Take(50)) ListSuggestions.Add(r);
-    }
+    // Narrow the visible rows to those matching ListText; empty text shows the entire kind.
+    private void RefilterList() =>
+        ListItems = _listRows is null ? Array.Empty<CrsRow>() : Filter(_listRows, ListText).ToList();
 
-    public void ChooseListItem(object? item)
+    partial void OnListTextChanged(string value) => RefilterList();
+
+    partial void OnSelectedListItemChanged(CrsRow? value) => ChooseListItem(value);
+
+    private void ChooseListItem(CrsRow? row)
     {
-        _selectedListRow = item as CrsRow;
-        if (_selectedListRow is null) { ResetStandardAxisLabel(); ClearCandidate(); return; }
-        var isHorizontal = _selectedListRow.Kind.Contains("geographic") || _selectedListRow.Kind.Contains("projected");
+        if (row is null) { ResetStandardAxisLabel(); ClearCandidate(); return; }
+        var isHorizontal = row.Kind.Contains("geographic") || row.Kind.Contains("projected");
         AxisOrderEnabled = isHorizontal;
-        UpdateStandardAxisLabel(isHorizontal ? _selectedListRow.Code : null);
-        LoadListCandidate(_selectedListRow.Code);
+        UpdateStandardAxisLabel(isHorizontal ? row.Code : null);
+        LoadListCandidate(row.Code);
     }
 
     partial void OnSelectedAxisOrderIndexChanged(int value)
     {
-        if (_mode == "list" && _selectedListRow is not null) LoadListCandidate(_selectedListRow.Code);
+        if (_mode == "list" && SelectedListItem is not null) LoadListCandidate(SelectedListItem.Code);
     }
 
     // Show the catalogue's standard orientation in parentheses on the "Estándar" option,
@@ -397,7 +399,7 @@ public partial class EpsgPickerViewModel : ObservableObject
         // Record how this selection was made so the picker can be reopened on the same option.
         var pick = _mode switch
         {
-            "list" => new CrsPickState(SelectedCategoryIndex, Code: _selectedListRow?.Code, AxisOrder: SelectedAxisOrderIndex),
+            "list" => new CrsPickState(SelectedCategoryIndex, Code: SelectedListItem?.Code, AxisOrder: SelectedAxisOrderIndex),
             "compound" => new CrsPickState(SelectedCategoryIndex,
                               HorizontalCode: _compoundH?.Code,
                               VerticalCode: UnknownVertical ? null : _compoundV?.Code,
@@ -426,8 +428,7 @@ public partial class EpsgPickerViewModel : ObservableObject
                     var row = _listRows?.FirstOrDefault(r => r.Code == code);
                     if (row is not null)
                     {
-                        ListText = row.Display;                   // fill the search box
-                        ChooseListItem(row);                      // loads its candidate + details
+                        SelectedListItem = row;                   // selects it in the full list (loads candidate + details)
                         SelectedAxisOrderIndex = pick.AxisOrder;  // reapplies the chosen axis order
                     }
                 }
