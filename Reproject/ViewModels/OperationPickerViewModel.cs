@@ -65,10 +65,10 @@ public sealed partial class OperationPickerViewModel : ObservableObject
         var scope = string.IsNullOrEmpty(o.Scope) ? string.Empty : localizer.Format("OpScope", o.Scope);
         var remarks = string.IsNullOrEmpty(o.Remarks) ? string.Empty : localizer.Format("OpRemarks", o.Remarks);
 
-        // Offer a browser link only for sources we cannot fetch automatically (page-only, e.g. EGM2008).
-        // Directly downloadable ones (with a fileBase) are installed on selection, so no link here.
+        // Offer a browser link only for sources we cannot fetch automatically (page-only). Directly
+        // downloadable ones (a FileBase or an explicit per-file URL) are installed on selection.
         var source = GridDownloadCatalog.Find(o.GridFiles);
-        var pageOnly = source is not null && string.IsNullOrEmpty(source.FileBase);
+        var pageOnly = source is not null && GridDownloadCatalog.DirectUrlFor(o.GridFiles) is null;
         var downloadUri = pageOnly ? new Uri(source!.Url) : null;
         var downloadLabel = pageOnly ? localizer.Format("OpDownload", source!.Name) : string.Empty;
 

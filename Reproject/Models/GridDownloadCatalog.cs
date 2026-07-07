@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -11,9 +12,13 @@ namespace Reproject;
 // A known place to obtain a grid file. Match is a case-insensitive substring looked up in a grid
 // file name (as reported by EPSG, e.g. "Und_min1x1_egm2008_isw=82_WGS84_TideFree"); Url is the
 // official download page the user is sent to. FileBase, when set, is a URL prefix such that
-// FileBase + the exact grid file name is a DIRECT download (no licence gate), so the file can be
-// fetched straight into the geoid folder instead of opening the page.
-public sealed record GridDownloadSource(string Match, string Name, string Url, string FileBase = "");
+// FileBase + the exact grid file name is a DIRECT download (no licence gate). Files maps a specific
+// (EPSG) grid file name to its complete download URL, for when the grid is hosted under a name that
+// differs from its EPSG name (e.g. the NGA "_SE" distribution files); it takes precedence over
+// FileBase. Either kind of direct source is fetched straight into the geoid folder instead of
+// opening the page.
+public sealed record GridDownloadSource(string Match, string Name, string Url, string FileBase = "",
+    IReadOnlyDictionary<string, string>? Files = null);
 
 // Maps grid files an operation needs to an official download page, so the picker can offer a link when
 // the required file is one we know where to get. Grid files are agency-licensed and not redistributable,
@@ -32,7 +37,12 @@ public static class GridDownloadCatalog
     private static readonly GridDownloadSource[] Default =
     {
         new("egm2008", "EGM2008 geoid grid (NGA)",
-            "https://earth-info.nga.mil/index.php?dir=wgs84&action=wgs84"),
+            "https://earth-info.nga.mil/index.php?dir=wgs84&action=wgs84",
+            Files: new Dictionary<string, string>
+            {
+                ["Und_min1x1_egm2008_isw=82_WGS84_TideFree"]   = "https://digi21.blob.core.windows.net/geodetic-grids/Und_min1x1_egm2008_isw=82_WGS84_TideFree_SE",
+                ["Und_min2.5x2.5_egm2008_isw=82_WGS84_TideFree"] = "https://digi21.blob.core.windows.net/geodetic-grids/Und_min2.5x2.5_egm2008_isw=82_WGS84_TideFree_SE",
+            }),
         new("rednap", "EGM08-REDNAP Spanish geoid (IGN)",
             "https://datos-geodesia.ign.es/geoide/",
             "https://datos-geodesia.ign.es/geoide/ascii/"),
@@ -53,16 +63,29 @@ public static class GridDownloadCatalog
         return _sources.FirstOrDefault(s => haystack.Contains(s.Match.ToLowerInvariant()));
     }
 
-    // The direct download URL for one specific grid file (FileBase + the file name), or null when the
-    // file's source is unknown or has no direct download (page-only). Used to fetch the file into the
-    // geoid folder automatically.
+    // The EPSG catalogue names some grids with a ".gz" download suffix, but the file installed and read
+    // is the uncompressed one; strip it so lookup and the on-disk name use the canonical name.
+    public static string NormalizeName(string fileName) =>
+        fileName.EndsWith(".gz", StringComparison.OrdinalIgnoreCase) ? fileName[..^3] : fileName;
+
+    // The direct download URL for one specific grid file, or null when the file's source is unknown or
+    // has no direct download (page-only). An explicit per-file URL (Files) wins; otherwise FileBase +
+    // the canonical file name. Used to fetch the file into the geoid folder automatically.
     public static string? DirectUrlFor(string fileName)
     {
         if (string.IsNullOrWhiteSpace(fileName)) return null;
-        var lower = fileName.ToLowerInvariant();
+        var name = NormalizeName(fileName.Trim());
+        var lower = name.ToLowerInvariant();
         var source = _sources.FirstOrDefault(s => lower.Contains(s.Match.ToLowerInvariant()));
-        if (source is null || string.IsNullOrEmpty(source.FileBase)) return null;
-        return source.FileBase.TrimEnd('/') + "/" + fileName.Trim();
+        if (source is null) return null;
+
+        if (source.Files is not null)
+            foreach (var kv in source.Files)
+                if (string.Equals(kv.Key, name, StringComparison.OrdinalIgnoreCase))
+                    return kv.Value;
+
+        if (string.IsNullOrEmpty(source.FileBase)) return null;
+        return source.FileBase.TrimEnd('/') + "/" + name;
     }
 
     // Load the cached list (fast, offline) then refresh from the remote in the background. Safe to call
@@ -111,7 +134,9 @@ public static class GridDownloadCatalog
         Uri.TryCreate(s.Url, UriKind.Absolute, out var uri) &&
         uri.Scheme == Uri.UriSchemeHttps &&
         (string.IsNullOrEmpty(s.FileBase) ||
-         (Uri.TryCreate(s.FileBase, UriKind.Absolute, out var fb) && fb.Scheme == Uri.UriSchemeHttps));
+         (Uri.TryCreate(s.FileBase, UriKind.Absolute, out var fb) && fb.Scheme == Uri.UriSchemeHttps)) &&
+        (s.Files is null ||
+         s.Files.Values.All(u => Uri.TryCreate(u, UriKind.Absolute, out var f) && f.Scheme == Uri.UriSchemeHttps));
 
     // The size in bytes of what url would download (its Content-Length), or null if the server does not
     // report it. Used to tell the user how big the download is before starting.

@@ -315,6 +315,9 @@ public partial class MainViewModel : ObservableObject
         var folder = _crs.GetGeoidModelsDirectory();
         if (string.IsNullOrEmpty(folder)) return false;
 
+        // Install under the canonical (uncompressed) name the engine looks for, regardless of whether
+        // the EPSG name carried a ".gz" suffix.
+        file = GridDownloadCatalog.NormalizeName(file.Trim());
         var destination = Path.Combine(folder, file);
         if (File.Exists(destination)) return true;
 
