@@ -104,17 +104,16 @@
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <GenerateTestArtifacts>False</GenerateTestArtifacts>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
   <Target Name="IncludeCrsKitNativePayload" AfterTargets="ResolveProjectReferences" BeforeTargets="AssignTargetPaths">
-    <Error Condition="!Exists('$(CrsKitComponentOut)\CrsKitInterop.dll')"
-           Text="CrsKitInterop.dll was not found in $(CrsKitComponentOut). The app cannot activate its CrsKit types without it (COMException at startup), so refusing to build a payload without it." />
+    <Error Condition="!Exists('$(CrsKitComponentOut)\CrsKitInterop.dll')" Text="CrsKitInterop.dll was not found in $(CrsKitComponentOut). The app cannot activate its CrsKit types without it (COMException at startup), so refusing to build a payload without it." />
     <ItemGroup>
       <!-- Qualified metadata (%(CrsKitNativeFile.Filename)): inside a target, bare %(Filename) batches
            over every item in the group and mislabels the payload. -->
       <CrsKitNativeFile Include="$(CrsKitComponentOut)\CrsKitInterop.dll;$(CrsKitComponentOut)\crskit*.dll;$(CrsKitComponentOut)\sqlite3.dll" />
-      <Content Include="@(CrsKitNativeFile)"
-               Link="%(CrsKitNativeFile.Filename)%(CrsKitNativeFile.Extension)"
-               CopyToOutputDirectory="PreserveNewest" />
+      <Content Include="@(CrsKitNativeFile)" Link="%(CrsKitNativeFile.Filename)%(CrsKitNativeFile.Extension)" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
   </Target>
 
@@ -122,8 +121,7 @@
        without it produces an app that finds no EPSG data on any machine but this one, where CrsService
        falls back to the Digi3D.NET folder under ProgramData. Fail the packaging build instead. -->
   <Target Name="EnsureEpsgDatabaseIsPackaged" BeforeTargets="_ComputeAppxPackagePayload">
-    <Error Condition="!Exists('$(MSBuildThisFileDirectory)Data\epsg-fiel.sqlite')"
-           Text="Data\epsg-fiel.sqlite is missing, so the package would ship without the EPSG database. Copy it into Reproject\Data\ before packaging." />
+    <Error Condition="!Exists('$(MSBuildThisFileDirectory)Data\epsg-fiel.sqlite')" Text="Data\epsg-fiel.sqlite is missing, so the package would ship without the EPSG database. Copy it into Reproject\Data\ before packaging." />
   </Target>
 
 </Project>
