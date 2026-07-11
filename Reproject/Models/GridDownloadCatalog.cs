@@ -14,9 +14,8 @@ namespace Reproject;
 // official download page the user is sent to. FileBase, when set, is a URL prefix such that
 // FileBase + the exact grid file name is a DIRECT download (no licence gate). Files maps a specific
 // (EPSG) grid file name to its complete download URL, for when the grid is hosted under a name that
-// differs from its EPSG name (e.g. the NGA "_SE" distribution files); it takes precedence over
-// FileBase. Either kind of direct source is fetched straight into the geoid folder instead of
-// opening the page.
+// differs from its EPSG name; it takes precedence over FileBase. Either kind of direct source is
+// fetched straight into the geoid folder instead of opening the page.
 public sealed record GridDownloadSource(string Match, string Name, string Url, string FileBase = "",
     IReadOnlyDictionary<string, string>? Files = null);
 
@@ -38,14 +37,10 @@ public static class GridDownloadCatalog
     {
         new("egm2008", "EGM2008 geoid grid (NGA)",
             "https://earth-info.nga.mil/index.php?dir=wgs84&action=wgs84",
-            Files: new Dictionary<string, string>
-            {
-                ["Und_min1x1_egm2008_isw=82_WGS84_TideFree"]   = "https://digi21.blob.core.windows.net/geodetic-grids/Und_min1x1_egm2008_isw=82_WGS84_TideFree_SE",
-                ["Und_min2.5x2.5_egm2008_isw=82_WGS84_TideFree"] = "https://digi21.blob.core.windows.net/geodetic-grids/Und_min2.5x2.5_egm2008_isw=82_WGS84_TideFree_SE",
-            }),
+            "https://digi21.blob.core.windows.net/geodetic-grids/"),
         new("rednap", "EGM08-REDNAP Spanish geoid (IGN)",
             "https://datos-geodesia.ign.es/geoide/",
-            "https://datos-geodesia.ign.es/geoide/ascii/"),
+            "https://digi21.blob.core.windows.net/geodetic-grids/"),
     };
 
     private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
