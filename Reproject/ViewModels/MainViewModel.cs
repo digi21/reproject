@@ -52,6 +52,12 @@ public partial class MainViewModel : ObservableObject
     // Guards StartAsync against a second Loaded (the first build must not run twice).
     private bool _started;
 
+    // The EPSG operation the user picked for the current pair, remembered across runs: an ambiguous pair
+    // (say WGS 84 -> EGM2008 height, where the geoid comes at several grid resolutions) must come back
+    // transforming the way they chose, not silently switch to another operation. Null when they never
+    // chose — the pair is unambiguous, or the choice belongs to a pair they have since changed.
+    private int? _operationCode;
+
     public MainViewModel(ICrsService crs, ISettingsStore settings, IDialogService dialogs,
         IFilePickerService files, ILocalizer localizer)
     {
@@ -153,6 +159,7 @@ public partial class MainViewModel : ObservableObject
     {
         SourceCrsName = selection.DisplayName;
         SourceAxes = DescribeAxes(selection.Wkt);
+        _operationCode = null;   // the remembered operation was for the pair being replaced
         await RebuildTransformationAsync(letUserChooseOperation: true);
         Persist();
     }
@@ -161,6 +168,7 @@ public partial class MainViewModel : ObservableObject
     {
         TargetCrsName = selection.DisplayName;
         TargetAxes = DescribeAxes(selection.Wkt);
+        _operationCode = null;   // the remembered operation was for the pair being replaced
         await RebuildTransformationAsync(letUserChooseOperation: true);
         Persist();
     }
@@ -174,12 +182,13 @@ public partial class MainViewModel : ObservableObject
         while (RecentSystems.Count > MaxRecent) RecentSystems.RemoveAt(RecentSystems.Count - 1);
     }
 
-    private void Persist() => _settings.Save(SourceSelection, TargetSelection, RecentSystems);
+    private void Persist() => _settings.Save(SourceSelection, TargetSelection, RecentSystems, _operationCode);
 
     private void RestoreLastSelections()
     {
-        var (source, target, recent) = _settings.Load();
+        var (source, target, recent, operationCode) = _settings.Load();
         foreach (var r in recent) RecentSystems.Add(r);
+        _operationCode = operationCode;
 
         _suppressApply = true;   // assign the selections without re-applying; one silent rebuild below
         try
@@ -240,25 +249,34 @@ public partial class MainViewModel : ObservableObject
         var source = SourceSelection.Wkt;
         var target = TargetSelection.Wkt;
 
+        // The operation the user chose for this pair, if any; otherwise let the engine pick.
+        ITransformation Build() => _operationCode is int code
+            ? _crs.CreateTransformationFromWkt(source, target, code)
+            : _crs.CreateTransformationFromWkt(source, target);
+
         try
         {
-            // Fast path: the engine builds the single (or best) operation directly.
-            ApplyTransformation(_crs.CreateTransformationFromWkt(source, target));
+            ApplyTransformation(Build());
         }
         catch (Exception ex)
         {
             var error = ex;
 
             // If the build failed only because a grid file is missing and we can provide it, offer to
-            // download it (or say where to put it) and retry — this covers the single-operation case,
-            // which never reaches the picker below. Loop in case more than one grid is needed.
+            // download it (or say where to put it) and retry — this covers the single-operation case and
+            // the remembered one, which never reach the picker below. Loop in case more than one grid is
+            // needed.
             for (var attempt = 0; attempt < 4; attempt++)
             {
                 var missing = ExtractMissingGridFile(error.Message);
                 if (missing is null || !await EnsureGridFileAsync(missing)) break;
-                try { ApplyTransformation(_crs.CreateTransformationFromWkt(source, target)); return; }
+                try { ApplyTransformation(Build()); return; }
                 catch (Exception retryEx) { error = retryEx; }
             }
+
+            // A remembered operation that no longer builds (EPSG data changed, say) must not wedge the
+            // app: forget it and fall through to the candidates below.
+            _operationCode = null;
 
             // The failure may just be "several operations exist, none chosen". Ask the engine
             // for the candidates: if there really are several, let the user pick one; otherwise
@@ -290,9 +308,12 @@ public partial class MainViewModel : ObservableObject
                     return;
                 }
                 selected = chosen;
+                _operationCode = selected.Code;   // remember it, for this session and the next
             }
             else
             {
+                // Startup with nothing remembered: take the most accurate, but do not record it as a
+                // choice — it is a default, and the user should still be asked when they change a system.
                 selected = MostAccurate(candidates);
             }
 

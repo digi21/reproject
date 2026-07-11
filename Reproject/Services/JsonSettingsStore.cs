@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text.Json;
 
@@ -13,22 +14,31 @@ public sealed class JsonSettingsStore : ISettingsStore
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "Reproject", "settings.json");
 
-    public (CrsSelection? Source, CrsSelection? Target, IReadOnlyList<CrsSelection> Recent) Load()
+    public (CrsSelection? Source, CrsSelection? Target, IReadOnlyList<CrsSelection> Recent, int? OperationCode) Load()
     {
         var map = LoadMap();
         return (Read(map, "SourceName", "SourceWkt", "SourcePick"),
                 Read(map, "TargetName", "TargetWkt", "TargetPick"),
-                ReadRecent(map));
+                ReadRecent(map),
+                ReadOperationCode(map));
     }
 
-    public void Save(CrsSelection? source, CrsSelection? target, IReadOnlyList<CrsSelection> recent) => Update(map =>
+    public void Save(CrsSelection? source, CrsSelection? target, IReadOnlyList<CrsSelection> recent,
+        int? operationCode) => Update(map =>
     {
         Set(map, "SourceName", source?.DisplayName); Set(map, "SourceWkt", source?.Wkt);
         Set(map, "SourcePick", SerializePick(source?.Pick));
         Set(map, "TargetName", target?.DisplayName); Set(map, "TargetWkt", target?.Wkt);
         Set(map, "TargetPick", SerializePick(target?.Pick));
         Set(map, "Recent", recent.Count > 0 ? JsonSerializer.Serialize(recent) : null);
+        Set(map, "OperationCode", operationCode?.ToString(CultureInfo.InvariantCulture));
     });
+
+    private static int? ReadOperationCode(Dictionary<string, string> map) =>
+        map.TryGetValue("OperationCode", out var code) &&
+        int.TryParse(code, NumberStyles.Integer, CultureInfo.InvariantCulture, out var value)
+            ? value
+            : null;
 
     private static IReadOnlyList<CrsSelection> ReadRecent(Dictionary<string, string> map)
     {
