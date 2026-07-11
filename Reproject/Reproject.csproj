@@ -92,6 +92,11 @@
       - crskit(D).dll, sqlite3.dll : CrsKit + its sqlite dependency (vcpkg app-local step).
     All three sit in the component's deterministic build output (CrsKitInterop\bin\$(Platform)\$(Configuration)),
     which the solution builds before this project via the project-reference chain.
+
+    The items are added from a target, not a plain ItemGroup: at evaluation time (before anything is
+    built) that folder does not exist in a clean tree, so a static Include would silently expand to
+    nothing and ship a package that throws at startup. AssignTargetPaths runs after the referenced
+    projects are built, so by then the DLLs are on disk.
   -->
   <PropertyGroup>
     <CrsKitComponentOut>$(MSBuildThisFileDirectory)..\CrsKitInterop\bin\$(Platform)\$(Configuration)</CrsKitComponentOut>
@@ -100,8 +105,25 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
   </PropertyGroup>
-  <ItemGroup Condition="Exists('$(CrsKitComponentOut)')">
-    <Content Include="$(CrsKitComponentOut)\CrsKitInterop.dll;$(CrsKitComponentOut)\crskit*.dll;$(CrsKitComponentOut)\sqlite3.dll" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
+  <Target Name="IncludeCrsKitNativePayload" AfterTargets="ResolveProjectReferences" BeforeTargets="AssignTargetPaths">
+    <Error Condition="!Exists('$(CrsKitComponentOut)\CrsKitInterop.dll')"
+           Text="CrsKitInterop.dll was not found in $(CrsKitComponentOut). The app cannot activate its CrsKit types without it (COMException at startup), so refusing to build a payload without it." />
+    <ItemGroup>
+      <!-- Qualified metadata (%(CrsKitNativeFile.Filename)): inside a target, bare %(Filename) batches
+           over every item in the group and mislabels the payload. -->
+      <CrsKitNativeFile Include="$(CrsKitComponentOut)\CrsKitInterop.dll;$(CrsKitComponentOut)\crskit*.dll;$(CrsKitComponentOut)\sqlite3.dll" />
+      <Content Include="@(CrsKitNativeFile)"
+               Link="%(CrsKitNativeFile.Filename)%(CrsKitNativeFile.Extension)"
+               CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
+
+  <!-- The EPSG database is git-ignored (a large binary), so a fresh clone has no Data folder. Packaging
+       without it produces an app that finds no EPSG data on any machine but this one, where CrsService
+       falls back to the Digi3D.NET folder under ProgramData. Fail the packaging build instead. -->
+  <Target Name="EnsureEpsgDatabaseIsPackaged" BeforeTargets="_ComputeAppxPackagePayload">
+    <Error Condition="!Exists('$(MSBuildThisFileDirectory)Data\epsg-fiel.sqlite')"
+           Text="Data\epsg-fiel.sqlite is missing, so the package would ship without the EPSG database. Copy it into Reproject\Data\ before packaging." />
+  </Target>
 
 </Project>
