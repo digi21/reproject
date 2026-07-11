@@ -46,8 +46,11 @@ public partial class MainViewModel : ObservableObject
     private const int MaxRecent = 12;
 
     // Set while restoring at startup so assigning Source/TargetSelection does not re-apply (rebuild or
-    // show dialogs); the restore performs a single silent rebuild itself.
+    // show dialogs); StartAsync performs a single rebuild once the UI can show them.
     private bool _suppressApply;
+
+    // Guards StartAsync against a second Loaded (the first build must not run twice).
+    private bool _started;
 
     public MainViewModel(ICrsService crs, ISettingsStore settings, IDialogService dialogs,
         IFilePickerService files, ILocalizer localizer)
@@ -78,10 +81,23 @@ public partial class MainViewModel : ObservableObject
     }
 
     // Startup: bring up the engine and restore the last-used CRS. Call once, on the UI thread.
+    // Only restores the selections; building their transformation waits for StartAsync.
     public void Initialize()
     {
         StatusMessage = _crs.EnsureInitialized();
         RestoreLastSelections();
+    }
+
+    // Build the restored pair's transformation. Called once the window content is loaded, not from
+    // Initialize: until then there is no XamlRoot, and a restored pair whose grid file is missing
+    // needs to offer the download dialog like any other selection would.
+    public async Task StartAsync()
+    {
+        if (_started) return;
+        _started = true;
+
+        if (SourceSelection is not null && TargetSelection is not null)
+            await RebuildTransformationAsync(letUserChooseOperation: false);
     }
 
     [RelayCommand]
@@ -134,7 +150,7 @@ public partial class MainViewModel : ObservableObject
     {
         SourceCrsName = selection.DisplayName;
         SourceAxes = DescribeAxes(selection.Wkt);
-        await RebuildTransformationAsync(interactive: true);
+        await RebuildTransformationAsync(letUserChooseOperation: true);
         Persist();
     }
 
@@ -142,7 +158,7 @@ public partial class MainViewModel : ObservableObject
     {
         TargetCrsName = selection.DisplayName;
         TargetAxes = DescribeAxes(selection.Wkt);
-        await RebuildTransformationAsync(interactive: true);
+        await RebuildTransformationAsync(letUserChooseOperation: true);
         Persist();
     }
 
@@ -181,9 +197,6 @@ public partial class MainViewModel : ObservableObject
             }
         }
         finally { _suppressApply = false; }
-
-        if (SourceSelection is not null && TargetSelection is not null)
-            _ = RebuildTransformationAsync(interactive: false);
     }
 
     // The recent-list instance matching selection (so the dropdown shows it selected), adding it if
@@ -209,10 +222,11 @@ public partial class MainViewModel : ObservableObject
         catch { return string.Empty; }
     }
 
-    // interactive: true when triggered by a user picking a system (a modal dialog may be shown
-    // to disambiguate). false at startup restore, where the window has no XamlRoot yet and a
-    // dialog would throw — there we silently take the most accurate operation instead.
-    private async Task RebuildTransformationAsync(bool interactive)
+    // letUserChooseOperation: true when the user picked a system, so an ambiguous pair is theirs to
+    // disambiguate. false at startup restore, where being asked to choose again on every launch would
+    // be noise — there we silently take the most accurate operation. Either way a missing grid file is
+    // offered for download: by now the window is loaded, so dialogs can be shown.
+    private async Task RebuildTransformationAsync(bool letUserChooseOperation)
     {
         if (SourceSelection is null || TargetSelection is null)
         {
@@ -235,15 +249,12 @@ public partial class MainViewModel : ObservableObject
             // If the build failed only because a grid file is missing and we can provide it, offer to
             // download it (or say where to put it) and retry — this covers the single-operation case,
             // which never reaches the picker below. Loop in case more than one grid is needed.
-            if (interactive)
+            for (var attempt = 0; attempt < 4; attempt++)
             {
-                for (var attempt = 0; attempt < 4; attempt++)
-                {
-                    var missing = ExtractMissingGridFile(error.Message);
-                    if (missing is null || !await EnsureGridFileAsync(missing)) break;
-                    try { ApplyTransformation(_crs.CreateTransformationFromWkt(source, target)); return; }
-                    catch (Exception retryEx) { error = retryEx; }
-                }
+                var missing = ExtractMissingGridFile(error.Message);
+                if (missing is null || !await EnsureGridFileAsync(missing)) break;
+                try { ApplyTransformation(_crs.CreateTransformationFromWkt(source, target)); return; }
+                catch (Exception retryEx) { error = retryEx; }
             }
 
             // The failure may just be "several operations exist, none chosen". Ask the engine
@@ -260,7 +271,7 @@ public partial class MainViewModel : ObservableObject
             }
 
             TransformationOption selected;
-            if (interactive)
+            if (letUserChooseOperation)
             {
                 TransformationOption? chosen;
                 try { chosen = await _dialogs.PickTransformationAsync(candidates); }
@@ -282,7 +293,7 @@ public partial class MainViewModel : ObservableObject
                 selected = MostAccurate(candidates);
             }
 
-            if (interactive) await EnsureGridsAsync(selected);
+            await EnsureGridsAsync(selected);
             try { ApplyTransformation(_crs.CreateTransformationFromWkt(source, target, selected.Code)); }
             catch (Exception ex2) { ShowTransformError(ex2); }
         }
