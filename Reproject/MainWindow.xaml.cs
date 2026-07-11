@@ -23,7 +23,9 @@ public sealed partial class MainWindow : Window
 
         // The restored pair is only transformed once the content is loaded: building it may need to ask
         // the user something (a missing grid file to download), and a dialog needs a live XamlRoot.
+        // Loaded fires from inside Activate(), where a dialog cannot be shown yet, so hand the work back
+        // to the dispatcher and let it run once the window is up.
         if (Content is FrameworkElement root)
-            root.Loaded += (_, _) => _ = VM.StartAsync();
+            root.Loaded += (_, _) => DispatcherQueue.TryEnqueue(() => _ = VM.StartAsync());
     }
 }

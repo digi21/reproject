@@ -88,16 +88,19 @@ public partial class MainViewModel : ObservableObject
         RestoreLastSelections();
     }
 
-    // Build the restored pair's transformation. Called once the window content is loaded, not from
-    // Initialize: until then there is no XamlRoot, and a restored pair whose grid file is missing
-    // needs to offer the download dialog like any other selection would.
+    // Build the restored pair's transformation. Called once the window is shown, not from Initialize:
+    // until then there is no XamlRoot, and a restored pair whose grid file is missing needs to offer
+    // the download dialog like any other selection would. Nothing above catches what this throws (it is
+    // started, not awaited), so a failure has to end up in the banner here or it is lost silently.
     public async Task StartAsync()
     {
         if (_started) return;
         _started = true;
 
-        if (SourceSelection is not null && TargetSelection is not null)
-            await RebuildTransformationAsync(letUserChooseOperation: false);
+        if (SourceSelection is null || TargetSelection is null) return;
+
+        try { await RebuildTransformationAsync(letUserChooseOperation: false); }
+        catch (Exception ex) { ShowTransformError(ex); }
     }
 
     [RelayCommand]
