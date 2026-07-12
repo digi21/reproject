@@ -9,7 +9,7 @@
     {
       "kind": "git",
       "repository": "https://github.com/digi21/crskit",
-      "baseline": "eec507d969c15e36502241302eecc08bca82049d",
+      "baseline": "dd156c658f4e5e15a245440ce19b8189f836d5f9",
       "packages": ["crskit"]
     }
   ]
