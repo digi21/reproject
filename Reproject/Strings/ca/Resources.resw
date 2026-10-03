@@ -55,7 +55,7 @@
   <data name="TargetLabel.Text" xml:space="preserve"><value>Sistema de coordenades de destinació</value></data>
   <data name="ImportButton.Content" xml:space="preserve"><value>Importa…</value></data>
   <data name="ExportButton.Content" xml:space="preserve"><value>Exporta…</value></data>
-  <data name="HintText.Text" xml:space="preserve"><value>Una línia per punt; valors separats per espai, coma o tabulador.</value></data>
+  <data name="HintText.Text" xml:space="preserve"><value>Una línia per punt; valors separats per espai, coma, punt i coma o tabulador.</value></data>
   <data name="InputCaption.Text" xml:space="preserve"><value>Escriu o enganxa aquí les coordenades a transformar</value></data>
   <data name="OutputCaption.Text" xml:space="preserve"><value>Copia d'aquí les coordenades transformades</value></data>
   <data name="AboutLink.Content" xml:space="preserve"><value>Quant a</value></data>

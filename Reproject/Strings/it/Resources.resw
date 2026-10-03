@@ -55,7 +55,7 @@
   <data name="TargetLabel.Text" xml:space="preserve"><value>Sistema di coordinate di destinazione</value></data>
   <data name="ImportButton.Content" xml:space="preserve"><value>Importa…</value></data>
   <data name="ExportButton.Content" xml:space="preserve"><value>Esporta…</value></data>
-  <data name="HintText.Text" xml:space="preserve"><value>Una riga per punto; valori separati da spazio, virgola o tabulazione.</value></data>
+  <data name="HintText.Text" xml:space="preserve"><value>Una riga per punto; valori separati da spazio, virgola, punto e virgola o tabulazione.</value></data>
   <data name="InputCaption.Text" xml:space="preserve"><value>Digita o incolla qui le coordinate da trasformare</value></data>
   <data name="OutputCaption.Text" xml:space="preserve"><value>Copia da qui le coordinate trasformate</value></data>
   <data name="AboutLink.Content" xml:space="preserve"><value>Informazioni</value></data>

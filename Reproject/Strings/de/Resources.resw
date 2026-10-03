@@ -55,7 +55,7 @@
   <data name="TargetLabel.Text" xml:space="preserve"><value>Ziel-Koordinatensystem</value></data>
   <data name="ImportButton.Content" xml:space="preserve"><value>Importieren…</value></data>
   <data name="ExportButton.Content" xml:space="preserve"><value>Exportieren…</value></data>
-  <data name="HintText.Text" xml:space="preserve"><value>Eine Zeile pro Punkt; Werte durch Leerzeichen, Komma oder Tabulator getrennt.</value></data>
+  <data name="HintText.Text" xml:space="preserve"><value>Eine Zeile pro Punkt; Werte durch Leerzeichen, Komma, Semikolon oder Tabulator getrennt.</value></data>
   <data name="InputCaption.Text" xml:space="preserve"><value>Hier die zu transformierenden Koordinaten eingeben oder einfügen</value></data>
   <data name="OutputCaption.Text" xml:space="preserve"><value>Die transformierten Koordinaten von hier kopieren</value></data>
   <data name="AboutLink.Content" xml:space="preserve"><value>Info</value></data>

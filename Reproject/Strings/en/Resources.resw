@@ -55,7 +55,7 @@
   <data name="TargetLabel.Text" xml:space="preserve"><value>Target coordinate system</value></data>
   <data name="ImportButton.Content" xml:space="preserve"><value>Import…</value></data>
   <data name="ExportButton.Content" xml:space="preserve"><value>Export…</value></data>
-  <data name="HintText.Text" xml:space="preserve"><value>One line per point; values separated by space, comma or tab.</value></data>
+  <data name="HintText.Text" xml:space="preserve"><value>One line per point; values separated by space, comma, semicolon or tab.</value></data>
   <data name="InputCaption.Text" xml:space="preserve"><value>Type or paste the coordinates to transform here</value></data>
   <data name="OutputCaption.Text" xml:space="preserve"><value>Copy the transformed coordinates from here</value></data>
   <data name="AboutLink.Content" xml:space="preserve"><value>About</value></data>

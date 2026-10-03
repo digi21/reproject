@@ -55,7 +55,7 @@
   <data name="TargetLabel.Text" xml:space="preserve"><value>Helburuko koordenatu-sistema</value></data>
   <data name="ImportButton.Content" xml:space="preserve"><value>Inportatu…</value></data>
   <data name="ExportButton.Content" xml:space="preserve"><value>Esportatu…</value></data>
-  <data name="HintText.Text" xml:space="preserve"><value>Lerro bat puntu bakoitzeko; balioak zuriunez, komaz edo tabulazioz bereizita.</value></data>
+  <data name="HintText.Text" xml:space="preserve"><value>Lerro bat puntu bakoitzeko; balioak zuriunez, komaz, puntu eta komaz edo tabulazioz bereizita.</value></data>
   <data name="InputCaption.Text" xml:space="preserve"><value>Idatzi edo itsatsi hemen transformatu beharreko koordenatuak</value></data>
   <data name="OutputCaption.Text" xml:space="preserve"><value>Kopiatu hemendik transformatutako koordenatuak</value></data>
   <data name="AboutLink.Content" xml:space="preserve"><value>Honi buruz</value></data>
