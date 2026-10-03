@@ -20,8 +20,8 @@ public sealed record GridDownloadSource(string Match, string Name, string Url, s
     IReadOnlyDictionary<string, string>? Files = null);
 
 // Maps grid files an operation needs to an official download page, so the picker can offer a link when
-// the required file is one we know where to get. Grid files are agency-licensed and not redistributable,
-// so we only ever link to the source's own page — we never host or fetch the file itself.
+// the required file is one we know where to get. FileBase points to Digi21's copies of grids whose licence
+// allows redistribution (EGM2008 from NGA, EGM08-REDNAP from IGN); for any other grid we link to the source's page.
 //
 // The list is fetched at runtime from a small JSON in the public crskit repo, so it can be updated (new
 // sources, fixed URLs) without rebuilding the app. A bundled default seeds it and is the fallback when

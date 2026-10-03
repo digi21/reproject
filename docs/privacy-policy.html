@@ -106,14 +106,16 @@
       </li>
       <li>
         <strong>Grid downloads (only when you ask).</strong> When you choose to download a specific grid
-        file, the app fetches it directly from the official third-party agency that provides it (for
-        example, the U.S. National Geospatial-Intelligence Agency or Spain’s Instituto Geográfico
-        Nacional).
+        file, the app downloads it from Digi21’s file storage on Microsoft Azure
+        (<code>digi21.blob.core.windows.net</code>), which hosts copies of official grids whose licence allows
+        redistribution (for example, the EGM2008 geoid of the U.S. National Geospatial-Intelligence Agency
+        and the EGM08-REDNAP geoid of Spain’s Instituto Geográfico Nacional). For any other grid, the app
+        opens the agency’s own download page.
       </li>
     </ul>
     <p>
       As with any internet request, these connections make your device’s IP address visible to the
-      servers you contact (GitHub and, if you download a grid, the relevant agency). Those parties
+      servers you contact (GitHub and, if you download a grid, Microsoft Azure or the agency whose page you open). Those parties
       process that information under their own privacy policies — for example,
       <a href="https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub’s privacy statement</a>.
       We do not receive, collect, or store your IP address or any other data from these requests.
@@ -122,7 +124,8 @@
     <h2>4. Third-party services</h2>
     <p>
       Reproject relies on <a href="https://github.com" rel="noopener">GitHub</a> to host the grid-source
-      catalog, and on the official geodetic agencies whose grids you may choose to download. We are not
+      catalog, on <a href="https://azure.microsoft.com" rel="noopener">Microsoft Azure</a> to host Digi21’s copies of the grids,
+      and on the official geodetic agencies that publish them. We are not
       affiliated with those agencies, and their websites and downloads are governed by their own terms
       and privacy policies.
     </p>
