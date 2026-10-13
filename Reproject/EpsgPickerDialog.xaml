@@ -198,7 +198,7 @@
                                Text="{x:Bind VM.DetailDatum, Mode=OneWay}" />
                     <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,4,0,0">
                         <TextBlock x:Uid="AxisOrderLabel" Text="Orientación de ejes" VerticalAlignment="Center" />
-                        <ComboBox MinWidth="140"
+                        <ComboBox x:Name="AxisOrderCombo" MinWidth="140"
                                   IsEnabled="{x:Bind VM.AxisOrderEnabled, Mode=OneWay}"
                                   SelectedIndex="{x:Bind VM.SelectedAxisOrderIndex, Mode=TwoWay}">
                             <ComboBoxItem Content="{x:Bind VM.StandardAxisLabel, Mode=OneWay}" />

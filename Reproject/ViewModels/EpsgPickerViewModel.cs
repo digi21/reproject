@@ -204,6 +204,7 @@ public partial class EpsgPickerViewModel : ObservableObject
 
     partial void OnSelectedAxisOrderIndexChanged(int value)
     {
+        if (value < 0) return;   // the dialog clears the selection for a moment to redraw the "Standard" label
         if (_mode == "list" && SelectedListItem is not null) LoadListCandidate(SelectedListItem.Code);
     }
 

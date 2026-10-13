@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 
@@ -11,6 +12,21 @@ public sealed partial class EpsgPickerDialog : ContentDialog
     {
         VM = vm;
         InitializeComponent();
+        VM.PropertyChanged += OnViewModelPropertyChanged;
+        Closed += (_, _) => VM.PropertyChanged -= OnViewModelPropertyChanged;
+    }
+
+    // A ComboBox does not redraw its closed box when the Content of the selected item changes, so the "Standard" item
+    // kept the axes of the previous system. Reselect it once the binding has updated the Content.
+    private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(EpsgPickerViewModel.StandardAxisLabel)) return;
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            if (AxisOrderCombo.SelectedIndex != 0) return;
+            AxisOrderCombo.SelectedIndex = -1;
+            AxisOrderCombo.SelectedIndex = 0;
+        });
     }
 
     private void OnPrimary(ContentDialog sender, ContentDialogButtonClickEventArgs args)
