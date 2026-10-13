@@ -176,6 +176,20 @@
                 <StackPanel Spacing="4">
                     <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"
                                Text="{x:Bind VM.DetailName, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
+                    <Border Visibility="{x:Bind VM.HasDetailError, Mode=OneWay, Converter={StaticResource BoolToVis}}"
+                            BorderBrush="{ThemeResource SystemFillColorCriticalBrush}" BorderThickness="1" CornerRadius="4"
+                            Background="{ThemeResource SystemFillColorCriticalBackgroundBrush}" Padding="10,8">
+                        <Grid ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Glyph="&#xEB90;" FontSize="16" VerticalAlignment="Top" Margin="0,2,0,0"
+                                      Foreground="{ThemeResource SystemFillColorCriticalBrush}" />
+                            <TextBlock Grid.Column="1" TextWrapping="Wrap" IsTextSelectionEnabled="True"
+                                       Text="{x:Bind VM.DetailErrorText, Mode=OneWay}" />
+                        </Grid>
+                    </Border>
                     <TextBlock Style="{ThemeResource CaptionTextBlockStyle}"
                                Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"
                                Text="{x:Bind VM.DetailMeta, Mode=OneWay}" />

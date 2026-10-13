@@ -62,6 +62,7 @@ public partial class EpsgPickerViewModel : ObservableObject
         DetailName = _localizer.Get("DetailNoSelection");
         DetailMeta = string.Empty;
         DetailDatum = string.Empty;
+        DetailErrorText = string.Empty;
 
         ApplyCategory(0);
     }
@@ -88,6 +89,9 @@ public partial class EpsgPickerViewModel : ObservableObject
     [ObservableProperty] public partial string DetailName { get; set; }
     [ObservableProperty] public partial string DetailMeta { get; set; }
     [ObservableProperty] public partial string DetailDatum { get; set; }
+    // Set when the selected system cannot be created; the detail pane shows DetailErrorText in a red frame.
+    [ObservableProperty] public partial bool HasDetailError { get; set; }
+    [ObservableProperty] public partial string DetailErrorText { get; set; }
     [ObservableProperty] public partial string StandardAxisLabel { get; set; }
     [ObservableProperty] public partial bool AxisOrderEnabled { get; set; }
     [ObservableProperty] public partial int SelectedAxisOrderIndex { get; set; }
@@ -229,7 +233,7 @@ public partial class EpsgPickerViewModel : ObservableObject
             var wkt = _crs.GetWktWithAxisOrder(code, CurrentAxisOrder());
             SetCandidate(d.Name, wkt);
         }
-        catch (Exception ex) { ShowError(ErrorText.Of(ex)); ClearCandidate(); }
+        catch (Exception ex) { ShowError(ErrorText.Of(ex), SelectedListItem?.Name); ClearCandidate(); }
     }
 
     private CrsAxisOrder CurrentAxisOrder()
@@ -304,7 +308,7 @@ public partial class EpsgPickerViewModel : ObservableObject
                 ClearCandidate();
             }
         }
-        catch (Exception ex) { ShowError(ErrorText.Of(ex)); ClearCandidate(); }
+        catch (Exception ex) { ShowError(ErrorText.Of(ex), SelectedHorizontal?.Name); ClearCandidate(); }
     }
 
     // ---- manual mode ---------------------------------------------------------
@@ -472,6 +476,7 @@ public partial class EpsgPickerViewModel : ObservableObject
         var datum = new[] { d.DatumName, d.PrimeMeridian, d.Ellipsoid }
             .Where(s => !string.IsNullOrEmpty(s));
         DetailDatum = string.Join("  ·  ", datum);
+        HasDetailError = false;
     }
 
     private void ShowNameOnly(string name)
@@ -479,12 +484,15 @@ public partial class EpsgPickerViewModel : ObservableObject
         DetailName = name.Length > 0 ? name : _localizer.Get("DetailNoSelection");
         DetailMeta = string.Empty;
         DetailDatum = string.Empty;
+        HasDetailError = false;
     }
 
-    private void ShowError(string message)
+    private void ShowError(string message, string? name = null)
     {
-        DetailName = _localizer.Get("DetailError");
-        DetailMeta = message;
+        DetailName = string.IsNullOrEmpty(name) ? _localizer.Get("DetailError") : name;
+        DetailMeta = string.Empty;
         DetailDatum = string.Empty;
+        DetailErrorText = message;
+        HasDetailError = true;
     }
 }
