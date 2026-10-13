@@ -229,7 +229,7 @@ public partial class EpsgPickerViewModel : ObservableObject
             var wkt = _crs.GetWktWithAxisOrder(code, CurrentAxisOrder());
             SetCandidate(d.Name, wkt);
         }
-        catch (Exception ex) { ShowError(ex.Message); ClearCandidate(); }
+        catch (Exception ex) { ShowError(ErrorText.Of(ex)); ClearCandidate(); }
     }
 
     private CrsAxisOrder CurrentAxisOrder()
@@ -304,7 +304,7 @@ public partial class EpsgPickerViewModel : ObservableObject
                 ClearCandidate();
             }
         }
-        catch (Exception ex) { ShowError(ex.Message); ClearCandidate(); }
+        catch (Exception ex) { ShowError(ErrorText.Of(ex)); ClearCandidate(); }
     }
 
     // ---- manual mode ---------------------------------------------------------
@@ -320,7 +320,7 @@ public partial class EpsgPickerViewModel : ObservableObject
             ShowNameOnly(name);
             SetCandidate(name, wkt);
         }
-        catch (Exception ex) { ShowError(ex.Message); ClearCandidate(); }
+        catch (Exception ex) { ShowError(ErrorText.Of(ex)); ClearCandidate(); }
     }
 
     [RelayCommand]

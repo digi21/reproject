@@ -29,7 +29,7 @@ public sealed class CrsService(ILocalizer localizer, ISettingsStore settings) : 
         }
         catch (Exception ex)
         {
-            return _localizer.Format("EpsgError", ex.Message);
+            return _localizer.Format("EpsgError", ErrorText.Of(ex));
         }
     }
 

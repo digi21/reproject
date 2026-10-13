@@ -392,7 +392,7 @@ public partial class MainViewModel : ObservableObject
         _transformation = null;
         OutputText = string.Empty;
         StatusMessage = string.Empty;
-        ErrorMessage = _localizer.Format("StatusTransformError", ex.Message);
+        ErrorMessage = _localizer.Format("StatusTransformError", ErrorText.Of(ex));
         IsErrorOpen = true;
     }
 
@@ -462,7 +462,7 @@ public partial class MainViewModel : ObservableObject
             }
             catch (Exception ex)
             {
-                builder.Append(_localizer.Format("ErrLine", ex.Message) + "\n");
+                builder.Append(_localizer.Format("ErrLine", ErrorText.Of(ex)) + "\n");
                 badLines++;
             }
         }
