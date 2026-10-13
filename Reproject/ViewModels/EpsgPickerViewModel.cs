@@ -195,7 +195,7 @@ public partial class EpsgPickerViewModel : ObservableObject
 
     private void ChooseListItem(CrsRow? row)
     {
-        if (row is null) { ResetStandardAxisLabel(); ClearCandidate(); return; }
+        if (row is null) { ResetStandardAxisLabel(); ClearCandidate(); ShowNameOnly(string.Empty); return; }
         var isHorizontal = row.Kind.Contains("geographic") || row.Kind.Contains("projected");
         AxisOrderEnabled = isHorizontal;
         UpdateStandardAxisLabel(isHorizontal ? row.Code : null);
@@ -292,7 +292,8 @@ public partial class EpsgPickerViewModel : ObservableObject
         if (SelectedHorizontal is null) { ClearCandidate(); ShowNameOnly(string.Empty); return; }
         try
         {
-            try { ShowDetails(_crs.GetDetails(SelectedHorizontal.Code)); } catch { /* keep going */ }
+            try { ShowDetails(_crs.GetDetails(SelectedHorizontal.Code)); }
+            catch { ShowNameOnly(SelectedHorizontal.Name); }   // keep going, but clear the pane of the previous system
 
             if (UnknownVertical)
             {
