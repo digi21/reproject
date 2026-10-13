@@ -172,12 +172,18 @@
                 <StackPanel Spacing="4">
                     <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"
                                Text="{x:Bind VM.DetailName, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
-                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}"
-                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"
-                               Text="{x:Bind VM.DetailMeta, Mode=OneWay}" />
-                    <TextBlock Style="{ThemeResource CaptionTextBlockStyle}"
-                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"
-                               Text="{x:Bind VM.DetailDatum, Mode=OneWay}" />
+                    <!-- The area of use of a world-wide CRS (EPSG:4326) lists every country: cap its height and scroll. -->
+                    <ScrollViewer MaxHeight="96" VerticalScrollBarVisibility="Auto" HorizontalScrollMode="Disabled">
+                        <StackPanel Spacing="4" Padding="0,0,16,0">
+                            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"
+                                       IsTextSelectionEnabled="True"
+                                       Text="{x:Bind VM.DetailMeta, Mode=OneWay}" />
+                            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"
+                                       Text="{x:Bind VM.DetailDatum, Mode=OneWay}" />
+                        </StackPanel>
+                    </ScrollViewer>
                     <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,4,0,0">
                         <TextBlock x:Uid="AxisOrderLabel" Text="Orientación de ejes" VerticalAlignment="Center" />
                         <ComboBox MinWidth="140"
