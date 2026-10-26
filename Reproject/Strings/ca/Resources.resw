@@ -59,25 +59,6 @@
   <data name="InputCaption.Text" xml:space="preserve"><value>Escriu o enganxa aquí les coordenades a transformar</value></data>
   <data name="OutputCaption.Text" xml:space="preserve"><value>Copia d'aquí les coordenades transformades</value></data>
   <data name="AboutLink.Content" xml:space="preserve"><value>Quant a</value></data>
-  <data name="PickerDialog.Title" xml:space="preserve"><value>Selecciona el sistema de referència de coordenades</value></data>
-  <data name="PickerDialog.PrimaryButtonText" xml:space="preserve"><value>Selecciona</value></data>
-  <data name="PickerDialog.CloseButtonText" xml:space="preserve"><value>Cancel·la</value></data>
-  <data name="SearchBox.PlaceholderText" xml:space="preserve"><value>Cerca per codi EPSG o nom…</value></data>
-  <data name="HorizontalLabel.Text" xml:space="preserve"><value>Sistema de coordenades horitzontal</value></data>
-  <data name="HorizontalSuggest.PlaceholderText" xml:space="preserve"><value>Cerca horitzontal (projectat / geogràfic)…</value></data>
-  <data name="VerticalLabel.Text" xml:space="preserve"><value>Sistema de coordenades vertical</value></data>
-  <data name="UnknownVerticalCheck.Content" xml:space="preserve"><value>Vertical desconegut</value></data>
-  <data name="VerticalSuggest.PlaceholderText" xml:space="preserve"><value>Cerca vertical…</value></data>
-  <data name="ImportPrjButton.Content" xml:space="preserve"><value>Importa .prj…</value></data>
-  <data name="ValidateButton.Content" xml:space="preserve"><value>Valida</value></data>
-  <data name="ManualWktBox.PlaceholderText" xml:space="preserve"><value>Enganxa aquí el WKT del sistema de coordenades…</value></data>
-  <data name="RemoveFavButton.Content" xml:space="preserve"><value>Treu</value></data>
-  <data name="AxisOrderLabel.Text" xml:space="preserve"><value>Orientació dels eixos</value></data>
-  <data name="AxisEastNorthItem.Content" xml:space="preserve"><value>Est-Nord</value></data>
-  <data name="AxisNorthEastItem.Content" xml:space="preserve"><value>Nord-Est</value></data>
-  <data name="CopyWktButton.Content" xml:space="preserve"><value>Copia el WKT</value></data>
-  <data name="ExportPrjButton.Content" xml:space="preserve"><value>Exporta .prj…</value></data>
-  <data name="MemorizeButton.Content" xml:space="preserve"><value>Memoritza</value></data>
   <data name="AboutDialog.Title" xml:space="preserve"><value>Quant a</value></data>
   <data name="AboutDialog.CloseButtonText" xml:space="preserve"><value>Tanca</value></data>
   <data name="AboutAppSubtitle.Text" xml:space="preserve"><value>Transformació de coordenades entre sistemes de referència.</value></data>
@@ -97,19 +78,7 @@
   <data name="EpsgReady" xml:space="preserve"><value>Base de dades EPSG a punt.</value></data>
   <data name="EpsgPath" xml:space="preserve"><value>Base de dades EPSG: {0}</value></data>
   <data name="EpsgError" xml:space="preserve"><value>No s'ha pogut obrir la base de dades EPSG: {0}</value></data>
-  <data name="AxisStandard" xml:space="preserve"><value>Estàndard</value></data>
-  <data name="CatGeographic2D" xml:space="preserve"><value>Geogràfic 2D</value></data>
-  <data name="CatGeographic3D" xml:space="preserve"><value>Geogràfic 3D</value></data>
-  <data name="CatProjected" xml:space="preserve"><value>Projectat</value></data>
-  <data name="CatVertical" xml:space="preserve"><value>Vertical</value></data>
-  <data name="CatCompound" xml:space="preserve"><value>Compost (H+V)</value></data>
-  <data name="CatManual" xml:space="preserve"><value>Manual (WKT)</value></data>
-  <data name="CatFavorites" xml:space="preserve"><value>Preferits</value></data>
-  <data name="DetailNoSelection" xml:space="preserve"><value>(sense selecció)</value></data>
-  <data name="DetailNoName" xml:space="preserve"><value>(sense nom)</value></data>
-  <data name="DetailError" xml:space="preserve"><value>Error</value></data>
   <data name="FileTypeText" xml:space="preserve"><value>Text</value></data>
-  <data name="FileTypePrj" xml:space="preserve"><value>Projecció ESRI</value></data>
   <data name="PickSourceButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve"><value>Tria el sistema de coordenades d'origen</value></data>
   <data name="PickTargetButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve"><value>Tria el sistema de coordenades de destinació</value></data>
   <data name="ExportFileName" xml:space="preserve"><value>coordenades-transformades</value></data>

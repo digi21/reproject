@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using CrsKitInterop;
+using Digi21.CrsKit.Interop;
 
 namespace Reproject;
 
-// ICrsService backed by the native CrsKitInterop.CrsEngine. Maps the WinRT projected
-// types to app-side models and memoizes the (slow) per-kind enumeration.
+// ICrsService backed by the native Digi21.CrsKit.Interop.CrsEngine. Maps the WinRT projected
+// types to app-side models.
 public sealed class CrsService(ILocalizer localizer, ISettingsStore settings) : ICrsService
 {
     private readonly ILocalizer _localizer = localizer;
     private readonly ISettingsStore _settings = settings;
-    private readonly Dictionary<string, IReadOnlyList<CrsRow>> _enumerationCache = new();
 
     public string EnsureInitialized()
     {
@@ -56,41 +55,7 @@ public sealed class CrsService(ILocalizer localizer, ISettingsStore settings) : 
         return grids;
     }
 
-    public IReadOnlyList<CrsRow> Enumerate(string kind)
-    {
-        if (_enumerationCache.TryGetValue(kind, out var cached)) return cached;
-
-        var list = new List<CrsRow>();
-        try
-        {
-            foreach (var c in CrsEngine.Enumerate(kind))
-                list.Add(new CrsRow(c.Code, c.Name, c.Kind));
-        }
-        catch { /* a kind may be absent in a given dataset */ }
-
-        list.Sort((a, b) => a.Code.CompareTo(b.Code));
-        _enumerationCache[kind] = list;
-        return list;
-    }
-
-    public CrsDetail GetDetails(int code)
-    {
-        var d = CrsEngine.GetDetails(code);
-        return new CrsDetail(d.Code, d.Name, d.Kind, d.AxisCount, d.AreaOfUse,
-            d.DatumName, d.DatumOrigin, d.PrimeMeridian, d.Ellipsoid);
-    }
-
-    public string GetWktWithAxisOrder(int code, CrsAxisOrder order) =>
-        CrsEngine.GetWktWithAxisOrder(code, Map(order));
-
-    public string GetCompoundWkt(int horizontalCode, int verticalCode) =>
-        CrsEngine.GetCompoundWkt(horizontalCode, verticalCode);
-
-    public string GetNameOfWkt(string wkt) => CrsEngine.GetNameOfWkt(wkt);
-
     public string DescribeAxes(string wkt) => CrsEngine.DescribeAxes(wkt);
-
-    public string GetStandardAxisLabel(int code) => CrsEngine.GetStandardAxisLabel(code);
 
     public ITransformation CreateTransformationFromWkt(string sourceWkt, string targetWkt) =>
         new TransformationAdapter(CrsEngine.CreateTransformationFromWkt(sourceWkt, targetWkt));
@@ -100,7 +65,7 @@ public sealed class CrsService(ILocalizer localizer, ISettingsStore settings) : 
         var list = new List<TransformationOption>();
         foreach (var op in CrsEngine.GetCandidateOperations(sourceWkt, targetWkt))
             list.Add(new TransformationOption(
-                op.Code, op.Name, op.Type, op.Accuracy, op.Scope, op.Remarks, op.MethodCode,
+                op.Code, op.Name, op.Type, op.AccuracyMetres, op.Scope, op.Remarks, op.MethodCode,
                 op.AreaOfUse, op.GridFiles));
         return list;
     }
@@ -127,13 +92,6 @@ public sealed class CrsService(ILocalizer localizer, ISettingsStore settings) : 
         // 3. Conventional Digi3D.NET location.
         return @"C:\ProgramData\Digi3D.NET\OpenGis\epsg-fiel.sqlite";
     }
-
-    private static AxisOrder Map(CrsAxisOrder order) => order switch
-    {
-        CrsAxisOrder.EastNorth => AxisOrder.EastNorth,
-        CrsAxisOrder.NorthEast => AxisOrder.NorthEast,
-        _ => AxisOrder.Default,
-    };
 
     private sealed class TransformationAdapter(Transformation inner) : ITransformation
     {

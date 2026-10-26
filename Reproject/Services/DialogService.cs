@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
+using Digi21.WinUI.CrsPicker;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -8,8 +10,8 @@ using Windows.System;
 
 namespace Reproject;
 
-// Shows the modal CRS picker and returns the chosen selection. Resolves a fresh
-// EpsgPickerViewModel per invocation so each dialog starts clean.
+// Shows the modal dialogs of the application: the CRS picker of the Digi21.WinUI.CrsPicker package, the about,
+// operation, settings and grid download dialogs.
 public interface IDialogService
 {
     // current: the system currently selected for this slot, so the picker can reopen on the same
@@ -30,16 +32,14 @@ public interface IDialogService
 
 public sealed class DialogService(IActiveWindow window, IServiceProvider services) : IDialogService
 {
-    public async Task<CrsSelection?> PickCrsAsync(CrsSelection? current = null)
-    {
-        var vm = services.GetRequiredService<EpsgPickerViewModel>();
-        vm.Restore(current);
-        var dialog = new EpsgPickerDialog(vm) { XamlRoot = window.XamlRoot };
-        // The outcome is whatever the view model confirmed: it is set by the primary
-        // button and by a double-click, and stays null on cancel.
-        await dialog.ShowAsync();
-        return vm.Result;
-    }
+    // The CRS picker keeps the favorite systems in %LOCALAPPDATA%\Reproject\favorites.json.
+    private static readonly string FavoritesFilePath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Reproject", "favorites.json");
+
+    public Task<CrsSelection?> PickCrsAsync(CrsSelection? current = null) =>
+        CrsPicker.PickAsync(
+            window.XamlRoot ?? throw new InvalidOperationException("The main window has no XamlRoot."),
+            new CrsPickerOptions { FavoritesFilePath = FavoritesFilePath, InitialSelection = current });
 
     public async Task ShowAboutAsync()
     {

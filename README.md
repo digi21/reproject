@@ -38,7 +38,7 @@ backed by the full EPSG catalogue. It is a WinUI 3 desktop app built on the
 - **Live transformation** — results update line by line as you type or paste.
 - **Import / export** — coordinate lists (CSV/TXT) and CRS definitions (`.prj` / WKT).
 - **Remembers your last-used systems** between runs.
-- **Axis orientation** control and a details pane (area of use, datum, ellipsoid, units).
+- **Axis order** control and a details pane (area of use, datum, ellipsoid, units).
 - Follows the OS **light/dark theme** and **language**.
 
 ## Languages
@@ -49,14 +49,13 @@ Galician, Basque, Catalan, Italian, French, German.
 ## Built on CrsKit
 
 The coordinate engine is [CrsKit](https://github.com/digi21/crskit), a modern C++
-geodesy/CRS library, consumed through its **vcpkg** package and wrapped for WinUI via a
-C++/WinRT component.
+geodesy/CRS library. Reproject uses CrsKit through two NuGet packages:
 
 ```
-Reproject                (C# WinUI 3 app)
-  → CrsKitInterop.Projection   (C#/WinRT projection)
-     → CrsKitInterop           (C++/WinRT component)
-        → vcpkg: crskit (+ sqlite3)
+Reproject                     (C# WinUI 3 app)
+  → Digi21.WinUI.CrsPicker    (CRS picker dialog, github.com/digi21/Digi21.WinUI.CrsPicker)
+  → Digi21.CrsKit.Interop     (C++/WinRT component that exposes crskit, plus the C# projection
+                               of the component, github.com/digi21/Digi21.CrsKit.Interop)
 ```
 
 ## Coordinate data (EPSG)
@@ -67,24 +66,20 @@ in-app **About** dialog for the full attribution and disclaimer.
 
 ## Tech
 
-WinUI 3 · .NET 10 · MVVM (CommunityToolkit.Mvvm) + dependency injection · C++/WinRT interop ·
-vcpkg · SQLite (EPSG).
+WinUI 3 · .NET 10 · MVVM (CommunityToolkit.Mvvm) + dependency injection · C++/WinRT interop
+(Digi21.CrsKit.Interop) · SQLite (EPSG).
 
 ## Build
 
-1. **Prerequisites:** Visual Studio (WinUI / Windows App SDK workload, toolset v145) and
-   **vcpkg** with `VCPKG_ROOT` set. The `crskit` port is an overlay port of the CrsKit repo;
-   its path is set in `CrsKitInterop/vcpkg-configuration.json` — adjust it if the library
-   repo lives elsewhere.
+1. Install Visual Studio with the WinUI / Windows App SDK workload.
 2. Provide the EPSG database `epsg-fiel.sqlite`. The app looks for it in the
    `DIGI21_EPSG_SQLITE` environment variable, then at
    `C:\ProgramData\Digi3D.NET\OpenGis\epsg-fiel.sqlite`.
-3. Open **`Reproject.sln`** (x64), restore packages, and build. Building `CrsKitInterop`
-   makes vcpkg install/compile `crskit`.
+3. Open **`Reproject.sln`** (x64), restore packages, and build.
 4. Run **Reproject** (F5).
 
-> The native DLLs (CrsKitInterop, CrsKit and sqlite3) are shipped next to the executable and
-> inside the MSIX payload as `Content` items in the app's `.csproj`.
+> The `Digi21.CrsKit.Interop` package carries the native DLLs (Digi21.CrsKit.Interop, crskit and sqlite3) in
+> `runtimes/win-x64/native`; the build copies them next to the executable.
 
 ## License
 

@@ -6,14 +6,12 @@ using WinRT.Interop;
 
 namespace Reproject;
 
-// File open/save for the coordinate text and for ESRI-style .prj (WKT) files. Pickers
+// Opens and saves coordinate text files and shows a picker to select the geoid models directory. Pickers
 // need the owning window HWND in an unpackaged app (InitializeWithWindow).
 public interface IFilePickerService
 {
     Task<string?> OpenTextAsync();
     Task SaveTextAsync(string content, string suggestedName);
-    Task<string?> ImportPrjAsync();
-    Task ExportPrjAsync(string wkt, string suggestedName);
     // Pick a folder (for the geoid models directory). Returns its path, or null if cancelled.
     Task<string?> PickFolderAsync();
 }
@@ -43,33 +41,6 @@ public sealed class FilePickerService(IActiveWindow window, ILocalizer localizer
         var file = await picker.PickSaveFileAsync();
         if (file is null) return;
         await FileIO.WriteTextAsync(file, content);
-    }
-
-    public async Task<string?> ImportPrjAsync()
-    {
-        var picker = new FileOpenPicker();
-        InitializeWithWindow.Initialize(picker, window.Hwnd);
-        picker.FileTypeFilter.Add(".prj");
-        picker.FileTypeFilter.Add(".wkt");
-        picker.FileTypeFilter.Add(".txt");
-        picker.FileTypeFilter.Add("*");
-
-        var file = await picker.PickSingleFileAsync();
-        if (file is null) return null;
-        return (await FileIO.ReadTextAsync(file)).Trim();
-    }
-
-    public async Task ExportPrjAsync(string wkt, string suggestedName)
-    {
-        var picker = new FileSavePicker();
-        InitializeWithWindow.Initialize(picker, window.Hwnd);
-        picker.FileTypeChoices.Add(localizer.Get("FileTypePrj"), new List<string> { ".prj" });
-        picker.FileTypeChoices.Add("WKT", new List<string> { ".wkt" });
-        picker.SuggestedFileName = suggestedName;
-
-        var file = await picker.PickSaveFileAsync();
-        if (file is null) return;
-        await FileIO.WriteTextAsync(file, wkt);
     }
 
     public async Task<string?> PickFolderAsync()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
+using Digi21.WinUI.CrsPicker;
 
 namespace Reproject;
 
@@ -27,9 +28,9 @@ public sealed class JsonSettingsStore : ISettingsStore
         int? operationCode) => Update(map =>
     {
         Set(map, "SourceName", source?.DisplayName); Set(map, "SourceWkt", source?.Wkt);
-        Set(map, "SourcePick", SerializePick(source?.Pick));
+        Set(map, "SourcePick", SerializePick(source?.PickerState));
         Set(map, "TargetName", target?.DisplayName); Set(map, "TargetWkt", target?.Wkt);
-        Set(map, "TargetPick", SerializePick(target?.Pick));
+        Set(map, "TargetPick", SerializePick(target?.PickerState));
         Set(map, "Recent", recent.Count > 0 ? JsonSerializer.Serialize(recent) : null);
         Set(map, "OperationCode", operationCode?.ToString(CultureInfo.InvariantCulture));
     });

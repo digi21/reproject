@@ -67,39 +67,18 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Digi21.CrsKit.Interop" Version="1.0.0-preview.1" />
+    <PackageReference Include="Digi21.WinUI.CrsPicker" Version="1.0.0-preview.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260416003" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1721" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CrsKitInterop.Projection\CrsKitInterop.Projection.csproj" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Optimize>False</Optimize>
   </PropertyGroup>
 
-  <!--
-    Ship the native C++/WinRT component and CrsKit's runtime DLLs next to the app exe AND
-    inside the MSIX payload. The C#-only project-reference chain does not carry these native
-    binaries, and files merely copied into the output folder are NOT added to the package
-    (that only ships known output groups). Declaring them as Content with a package-root Link
-    puts them in the payload output group, so they ship both loose (unpackaged run) and inside
-    the .msix (packaged run). CsWinRT needs CrsKitInterop.dll present to activate the
-    CrsKitInterop.* types — without it, activation throws COMException at startup.
-      - CrsKitInterop.dll          : the native WinRT impl.
-      - crskit(D).dll, sqlite3.dll : CrsKit + its sqlite dependency (vcpkg app-local step).
-    All three sit in the component's deterministic build output (CrsKitInterop\bin\$(Platform)\$(Configuration)),
-    which the solution builds before this project via the project-reference chain.
-
-    The items are added from a target, not a plain ItemGroup: at evaluation time (before anything is
-    built) that folder does not exist in a clean tree, so a static Include would silently expand to
-    nothing and ship a package that throws at startup. AssignTargetPaths runs after the referenced
-    projects are built, so by then the DLLs are on disk.
-  -->
   <PropertyGroup>
-    <CrsKitComponentOut>$(MSBuildThisFileDirectory)..\CrsKitInterop\bin\$(Platform)\$(Configuration)</CrsKitComponentOut>
     <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxBundle>Always</AppxBundle>
@@ -107,15 +86,6 @@
     <GenerateTestArtifacts>False</GenerateTestArtifacts>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
-  <Target Name="IncludeCrsKitNativePayload" AfterTargets="ResolveProjectReferences" BeforeTargets="AssignTargetPaths">
-    <Error Condition="!Exists('$(CrsKitComponentOut)\CrsKitInterop.dll')" Text="CrsKitInterop.dll was not found in $(CrsKitComponentOut). The app cannot activate its CrsKit types without it (COMException at startup), so refusing to build a payload without it." />
-    <ItemGroup>
-      <!-- Qualified metadata (%(CrsKitNativeFile.Filename)): inside a target, bare %(Filename) batches
-           over every item in the group and mislabels the payload. -->
-      <CrsKitNativeFile Include="$(CrsKitComponentOut)\CrsKitInterop.dll;$(CrsKitComponentOut)\crskit*.dll;$(CrsKitComponentOut)\sqlite3.dll" />
-      <Content Include="@(CrsKitNativeFile)" Link="%(CrsKitNativeFile.Filename)%(CrsKitNativeFile.Extension)" CopyToOutputDirectory="PreserveNewest" />
-    </ItemGroup>
-  </Target>
 
   <!-- The EPSG database is git-ignored (a large binary), so a fresh clone has no Data folder. Packaging
        without it produces an app that finds no EPSG data on any machine but this one, where CrsService

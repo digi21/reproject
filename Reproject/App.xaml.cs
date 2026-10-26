@@ -26,14 +26,11 @@ public partial class App : Application
         services.AddSingleton<IActiveWindow, ActiveWindow>();
         services.AddSingleton<ICrsService, CrsService>();
         services.AddSingleton<ISettingsStore, JsonSettingsStore>();
-        services.AddSingleton<IFavoritesStore, JsonFavoritesStore>();
         services.AddSingleton<IFilePickerService, FilePickerService>();
-        services.AddSingleton<IClipboardService, ClipboardService>();
         services.AddSingleton<IDialogService, DialogService>();
 
         // View models
         services.AddSingleton<MainViewModel>();
-        services.AddTransient<EpsgPickerViewModel>();
         services.AddTransient<SettingsViewModel>();
 
         return services.BuildServiceProvider();

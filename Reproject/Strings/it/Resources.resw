@@ -59,25 +59,6 @@
   <data name="InputCaption.Text" xml:space="preserve"><value>Digita o incolla qui le coordinate da trasformare</value></data>
   <data name="OutputCaption.Text" xml:space="preserve"><value>Copia da qui le coordinate trasformate</value></data>
   <data name="AboutLink.Content" xml:space="preserve"><value>Informazioni</value></data>
-  <data name="PickerDialog.Title" xml:space="preserve"><value>Seleziona il sistema di riferimento delle coordinate</value></data>
-  <data name="PickerDialog.PrimaryButtonText" xml:space="preserve"><value>Seleziona</value></data>
-  <data name="PickerDialog.CloseButtonText" xml:space="preserve"><value>Annulla</value></data>
-  <data name="SearchBox.PlaceholderText" xml:space="preserve"><value>Cerca per codice EPSG o nome…</value></data>
-  <data name="HorizontalLabel.Text" xml:space="preserve"><value>Sistema di coordinate orizzontale</value></data>
-  <data name="HorizontalSuggest.PlaceholderText" xml:space="preserve"><value>Cerca orizzontale (proiettato / geografico)…</value></data>
-  <data name="VerticalLabel.Text" xml:space="preserve"><value>Sistema di coordinate verticale</value></data>
-  <data name="UnknownVerticalCheck.Content" xml:space="preserve"><value>Verticale sconosciuto</value></data>
-  <data name="VerticalSuggest.PlaceholderText" xml:space="preserve"><value>Cerca verticale…</value></data>
-  <data name="ImportPrjButton.Content" xml:space="preserve"><value>Importa .prj…</value></data>
-  <data name="ValidateButton.Content" xml:space="preserve"><value>Convalida</value></data>
-  <data name="ManualWktBox.PlaceholderText" xml:space="preserve"><value>Incolla qui il WKT del sistema di coordinate…</value></data>
-  <data name="RemoveFavButton.Content" xml:space="preserve"><value>Rimuovi</value></data>
-  <data name="AxisOrderLabel.Text" xml:space="preserve"><value>Orientamento degli assi</value></data>
-  <data name="AxisEastNorthItem.Content" xml:space="preserve"><value>Est-Nord</value></data>
-  <data name="AxisNorthEastItem.Content" xml:space="preserve"><value>Nord-Est</value></data>
-  <data name="CopyWktButton.Content" xml:space="preserve"><value>Copia WKT</value></data>
-  <data name="ExportPrjButton.Content" xml:space="preserve"><value>Esporta .prj…</value></data>
-  <data name="MemorizeButton.Content" xml:space="preserve"><value>Memorizza</value></data>
   <data name="AboutDialog.Title" xml:space="preserve"><value>Informazioni</value></data>
   <data name="AboutDialog.CloseButtonText" xml:space="preserve"><value>Chiudi</value></data>
   <data name="AboutAppSubtitle.Text" xml:space="preserve"><value>Trasformazione di coordinate tra sistemi di riferimento.</value></data>
@@ -97,19 +78,7 @@
   <data name="EpsgReady" xml:space="preserve"><value>Database EPSG pronto.</value></data>
   <data name="EpsgPath" xml:space="preserve"><value>Database EPSG: {0}</value></data>
   <data name="EpsgError" xml:space="preserve"><value>Impossibile aprire il database EPSG: {0}</value></data>
-  <data name="AxisStandard" xml:space="preserve"><value>Standard</value></data>
-  <data name="CatGeographic2D" xml:space="preserve"><value>Geografico 2D</value></data>
-  <data name="CatGeographic3D" xml:space="preserve"><value>Geografico 3D</value></data>
-  <data name="CatProjected" xml:space="preserve"><value>Proiettato</value></data>
-  <data name="CatVertical" xml:space="preserve"><value>Verticale</value></data>
-  <data name="CatCompound" xml:space="preserve"><value>Composto (H+V)</value></data>
-  <data name="CatManual" xml:space="preserve"><value>Manuale (WKT)</value></data>
-  <data name="CatFavorites" xml:space="preserve"><value>Preferiti</value></data>
-  <data name="DetailNoSelection" xml:space="preserve"><value>(nessuna selezione)</value></data>
-  <data name="DetailNoName" xml:space="preserve"><value>(senza nome)</value></data>
-  <data name="DetailError" xml:space="preserve"><value>Errore</value></data>
   <data name="FileTypeText" xml:space="preserve"><value>Testo</value></data>
-  <data name="FileTypePrj" xml:space="preserve"><value>Proiezione ESRI</value></data>
   <data name="PickSourceButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve"><value>Scegli il sistema di coordinate di origine</value></data>
   <data name="PickTargetButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve"><value>Scegli il sistema di coordinate di destinazione</value></data>
   <data name="ExportFileName" xml:space="preserve"><value>coordinate-trasformate</value></data>

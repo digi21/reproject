@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Reproject;
 
-// The application's gateway to the CRS engine. Wraps the static CrsKitInterop.CrsEngine
+// Wraps the static Digi21.CrsKit.Interop.CrsEngine
 // behind an interface so the view models can be constructed (and tested) without the
 // process-wide native singleton.
 public interface ICrsService
@@ -14,13 +14,7 @@ public interface ICrsService
     // EPSG Geodetic Parameter Dataset version of the active database (e.g. "12.057"); "" if unknown.
     string GetEpsgVersion();
 
-    IReadOnlyList<CrsRow> Enumerate(string kind);
-    CrsDetail GetDetails(int code);
-    string GetWktWithAxisOrder(int code, CrsAxisOrder order);
-    string GetCompoundWkt(int horizontalCode, int verticalCode);
-    string GetNameOfWkt(string wkt);
     string DescribeAxes(string wkt);
-    string GetStandardAxisLabel(int code);
     ITransformation CreateTransformationFromWkt(string sourceWkt, string targetWkt);
 
     // The candidate EPSG operations when MORE THAN ONE exists between the two systems
