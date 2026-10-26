@@ -83,6 +83,9 @@
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <!-- Without AppxDefaultResourceQualifiers, the bundle declares only the default language, and the resources.pri of the
+         main package contains only English strings. -->
+    <AppxDefaultResourceQualifiers>Language=ca;de;en;es;eu;fr;gl;it</AppxDefaultResourceQualifiers>
     <GenerateTestArtifacts>False</GenerateTestArtifacts>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
