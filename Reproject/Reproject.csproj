@@ -67,7 +67,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageReference Include="Digi21.CrsKit.Interop" Version="1.0.0-preview.2" />
+    <PackageReference Include="Digi21.CrsKit.Interop" Version="1.0.0-preview.4" />
     <PackageReference Include="Digi21.WinUI.CrsPicker" Version="1.0.0-preview.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260416003" />
